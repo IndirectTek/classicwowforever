@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   title: "Privacy",
 };
 
-// Plain-language privacy notice for Milestone 1. Revisit when accounts,
-// characters, and payments arrive.
+// Plain-language privacy notice. Revisit when plans, the addon import, and
+// payments arrive.
 export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
@@ -18,12 +18,21 @@ export default function PrivacyPage() {
           opens. We don&apos;t sell it or share it.
         </p>
         <p>
+          <strong className="text-text">Your account.</strong> Signing in stores your email address
+          so we can send sign-in links. Characters you add (name, realm, race, class, level, zone)
+          are visible only to you. Delete a character and everything tied to it is deleted with it.
+        </p>
+        <p>
+          <strong className="text-text">Cookies.</strong> Signing in sets a cookie that keeps you
+          signed in. We don&apos;t use advertising or tracking cookies.
+        </p>
+        <p>
           <strong className="text-text">Analytics.</strong> We use Vercel Web Analytics to count
           page views. It doesn&apos;t use cookies or track you across sites.
         </p>
         <p>
-          <strong className="text-text">Removal.</strong> To be removed from the waitlist, reply to
-          any email from us or write to{" "}
+          <strong className="text-text">Removal.</strong> To be removed from the waitlist or to
+          delete your account, reply to any email from us or write to{" "}
           <a
             href={`mailto:${site.contactEmail}`}
             className="text-accent underline underline-offset-2"

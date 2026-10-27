@@ -19,7 +19,11 @@ export async function joinWaitlist(
     if (parsed.error.issues.some((issue) => issue.path[0] === "website")) {
       return { status: "success" };
     }
-    return { status: "error", message: parsed.error.issues[0].message };
+    return {
+      status: "error",
+      message: parsed.error.issues[0].message,
+      email: String(formData.get("email") ?? ""),
+    };
   }
 
   try {
@@ -32,7 +36,11 @@ export async function joinWaitlist(
     if (error && error.code !== UNIQUE_VIOLATION) throw error;
   } catch (error) {
     console.error("waitlist insert failed", error);
-    return { status: "error", message: "Something went wrong on our side. Please try again." };
+    return {
+      status: "error",
+      message: "Something went wrong on our side. Please try again.",
+      email: parsed.data.email,
+    };
   }
 
   return { status: "success" };

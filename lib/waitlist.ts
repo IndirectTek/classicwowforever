@@ -11,7 +11,7 @@ export const WaitlistInput = z.object({
 });
 
 export type WaitlistState =
-  { status: "idle" } | { status: "success" } | { status: "error"; message: string };
+  { status: "idle" } | { status: "success" } | { status: "error"; message: string; email?: string };
 
 // Postgres error code for a unique constraint violation.
 export const UNIQUE_VIOLATION = "23505";

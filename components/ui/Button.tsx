@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "secondary" | "ghost" | "danger";
 
 const base =
   "inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-base font-medium transition-colors " +
@@ -11,6 +11,7 @@ const variants: Record<Variant, string> = {
   primary: "bg-accent text-accent-text hover:brightness-110",
   secondary: "border border-border text-text hover:bg-surface-raised",
   ghost: "text-text hover:bg-surface-raised",
+  danger: "bg-danger text-accent-text hover:brightness-110",
 };
 
 // Shared with <Link> styled as a button, like a Rails `button_class` helper.

@@ -14,8 +14,9 @@ Built so far:
 - Rested XP calculator at `/rested`
 - An example plan at `/p/example` with a working session timer
 - The database schema for Milestones 2 and 3, with tested security rules
+- Magic-link sign-in and the Characters pages (Milestone 2)
 
-Next up are magic-link auth and characters (Milestone 2), then the planner (Milestone 3). [docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
+Next up is the planner (Milestone 3). [docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
 
 ## Stack
 
@@ -26,20 +27,26 @@ Next up are magic-link auth and characters (Milestone 2), then the planner (Mile
 
 ## Run it locally
 
-1. Install Node.js (latest LTS) and pnpm.
-2. `pnpm install`
-3. Create a free [Supabase](https://supabase.com) project.
-4. Apply the SQL in `supabase/migrations/` in filename order, then `supabase/seed.sql`. Paste each file into the Supabase SQL editor, or use the Supabase CLI (`supabase db push`).
-5. `cp .env.example .env.local` and fill in your Supabase URL and keys.
-6. `pnpm dev`, then open http://localhost:3000.
+You need Node.js (latest LTS), pnpm, and Docker.
 
-| Command        | What it does                                                                                                   |
-| -------------- | -------------------------------------------------------------------------------------------------------------- |
-| `pnpm dev`     | Dev server                                                                                                     |
-| `pnpm test`    | Unit tests (Vitest)                                                                                            |
-| `pnpm lint`    | ESLint                                                                                                         |
-| `pnpm build`   | Production build                                                                                               |
-| `pnpm test:db` | Migrations and security rules against a throwaway Postgres (set `TEST_DATABASE_URL`; see `scripts/test-db.sh`) |
+1. `pnpm install`
+2. `pnpm db:start` starts a local Supabase (Postgres, Auth, and a test inbox) in Docker. It applies `supabase/migrations/` and `supabase/seed.sql` automatically. The first run downloads a few images.
+3. `pnpm db:env` writes `.env.development.local` with your local Supabase URL and keys.
+4. `pnpm dev`, then open http://localhost:3000.
+
+Sign in with any address: the email lands in the local inbox at http://127.0.0.1:54324, not a real mailbox. `pnpm dev` always uses the local database; `.env.local` holds production values for scripts and is never used in development.
+
+| Command         | What it does                                                           |
+| --------------- | ---------------------------------------------------------------------- |
+| `pnpm dev`      | Dev server, against local Supabase                                     |
+| `pnpm test`     | Unit tests (Vitest)                                                    |
+| `pnpm lint`     | ESLint                                                                 |
+| `pnpm build`    | Production build                                                       |
+| `pnpm db:start` | Start local Supabase (Docker)                                          |
+| `pnpm db:reset` | Rebuild the local database from migrations and seed                    |
+| `pnpm db:stop`  | Stop local Supabase                                                    |
+| `pnpm db:env`   | Write `.env.development.local` for the running local stack             |
+| `pnpm test:db`  | Security and quota tests on a throwaway Postgres (`TEST_DATABASE_URL`) |
 
 ## Project layout
 

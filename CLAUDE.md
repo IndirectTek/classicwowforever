@@ -20,11 +20,17 @@ A longtime Ruby on Rails engineer learning Next.js, React, and Python. When you 
 
 ## Commands
 
-- `pnpm dev`: dev server
+- `pnpm dev`: dev server, against local Supabase (`pnpm db:start`, then `pnpm db:env`); sign-in emails go to Mailpit at http://127.0.0.1:54324
 - `pnpm test`: Vitest
 - `pnpm lint`: ESLint
 - `pnpm build`: production build
 - `pnpm test:db`: migrations plus RLS and quota tests against a throwaway Postgres (needs `TEST_DATABASE_URL`)
+
+## Auth
+
+- `lib/auth.ts`: `getCurrentUser()` (verified claims) and `requireUser(returnTo)`. Anything reading the session must sit behind a `<Suspense>` boundary (Cache Components).
+- Sign-in emails link to `/auth/confirm?token_hash=...` (see `supabase/templates/magic-link.html`). Production Auth settings are applied with `scripts/configure-supabase-auth.sh`; local ones live in `supabase/config.toml`.
+- User-owned queries use `lib/supabase/server.ts` so RLS applies.
 
 ## Decisions since the original plan
 

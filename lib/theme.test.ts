@@ -26,4 +26,8 @@ describe.each([
   it("accentText on accent meets 4.5:1", () => {
     expect(contrastRatio(palette.accentText, palette.accent)).toBeGreaterThanOrEqual(4.5);
   });
+
+  it("accentText on danger meets 4.5:1 (destructive buttons)", () => {
+    expect(contrastRatio(palette.accentText, palette.danger)).toBeGreaterThanOrEqual(4.5);
+  });
 });

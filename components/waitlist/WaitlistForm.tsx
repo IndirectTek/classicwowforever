@@ -35,6 +35,8 @@ export function WaitlistForm() {
           required
           autoComplete="email"
           placeholder="you@example.com"
+          // React clears the form after the action runs; put the email back on errors.
+          defaultValue={state.status === "error" ? state.email : undefined}
           aria-invalid={state.status === "error"}
           aria-describedby={state.status === "error" ? "waitlist-error" : undefined}
           className="h-11 w-full rounded-lg border border-border bg-surface px-3 text-text placeholder:text-text-muted focus-visible:outline-2 focus-visible:outline-accent sm:h-10 sm:flex-1"

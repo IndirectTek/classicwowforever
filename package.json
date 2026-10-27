@@ -9,9 +9,14 @@
     "lint": "eslint",
     "test": "vitest run",
     "format": "prettier --write .",
-    "test:db": "bash scripts/test-db.sh"
+    "test:db": "bash scripts/test-db.sh",
+    "db:start": "npx -y supabase@latest start",
+    "db:stop": "npx -y supabase@latest stop",
+    "db:reset": "npx -y supabase@latest db reset",
+    "db:env": "bash scripts/local-env.sh"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
     "@vercel/analytics": "^2.0.1",
     "next": "16.4.3",

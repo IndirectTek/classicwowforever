@@ -29,14 +29,12 @@ Please say hello in Discord before starting on something large, so two people do
 
 ## Running the app locally
 
-1. Install Node.js (latest LTS), pnpm, and Python 3.12
+1. Install Node.js (latest LTS), pnpm, Docker, and Python 3.12
 2. Fork and clone the repo
-3. Copy `.env.example` to `.env.local` and fill in your own values
-   - Create a free Supabase project for development
-   - Use your own Claude API key; self hosters and contributors pay their own inference
-4. Install dependencies: `pnpm install`
-5. Apply database migrations from `supabase/migrations/`
-6. Start the dev server: `pnpm dev`
+3. Install dependencies: `pnpm install`
+4. Start a local Supabase: `pnpm db:start`, then `pnpm db:env`
+5. Start the dev server: `pnpm dev`. Sign-in emails land in the local inbox at http://127.0.0.1:54324
+6. For the planner (Milestone 3), add your own Claude API key to `.env.development.local`; contributors pay their own inference
 7. For evals (from Milestone 3): `cd evals`, then `pip install -r requirements.txt`, then `python run_evals.py`
 
 Never commit `.env.local` or any key.
