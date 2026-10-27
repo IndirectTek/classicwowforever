@@ -16,8 +16,7 @@ Built so far:
 - The database schema for Milestones 2 and 3, with tested security rules
 - Magic-link sign-in and the Characters pages (Milestone 2)
 - The planner at `/plan`, with quota, feedback and shareable plans (Milestone 3)
-
-Next up is the eval harness (Milestone 4). [docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
+- Planner evals in `evals/` (Milestone 4) [docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
 
 ## Stack
 
@@ -49,6 +48,7 @@ Sign in with any address: the email lands in the local inbox at http://127.0.0.1
 | `pnpm db:stop`  | Stop local Supabase                                                    |
 | `pnpm db:env`   | Write `.env.development.local` for the running local stack             |
 | `pnpm test:db`  | Security and quota tests on a throwaway Postgres (`TEST_DATABASE_URL`) |
+| `pnpm evals`    | Planner evals against the Claude API (see `evals/README.md`)           |
 
 ## Project layout
 

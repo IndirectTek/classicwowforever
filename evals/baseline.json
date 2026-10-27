@@ -1,0 +1,18 @@
+{
+  "pass_rate": 1.0,
+  "checks": {
+    "valid": 1.0,
+    "fits_time": 1.0,
+    "known_quests": 1.0,
+    "rest_spot": 1.0,
+    "safe": 1.0,
+    "goal_fit": 1.0,
+    "slack": 0.964,
+    "logs_out": 1.0,
+    "lengths": 1.0
+  },
+  "scenarios": 28,
+  "model": "claude-haiku-5-5",
+  "effort": "medium",
+  "date": "20261027T031138Z"
+}

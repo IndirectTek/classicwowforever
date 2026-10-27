@@ -13,7 +13,10 @@
     "db:start": "npx -y supabase@latest start",
     "db:stop": "npx -y supabase@latest stop",
     "db:reset": "npx -y supabase@latest db reset",
-    "db:env": "bash scripts/local-env.sh"
+    "db:env": "bash scripts/local-env.sh",
+    "schema:export": "UPDATE_SCHEMA=1 vitest run lib/prompts/planOutputSchema.test.ts",
+    "evals": "cd evals && .venv/bin/python run_evals.py",
+    "evals:setup": "python3 -m venv evals/.venv && evals/.venv/bin/pip install -q -r evals/requirements.txt"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

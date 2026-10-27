@@ -35,8 +35,13 @@ A longtime Ruby on Rails engineer learning Next.js, React, and Python. When you 
 ## Planner
 
 - `POST /api/plans` (`app/api/plans/route.ts`): auth, `reserve_plan_request()` for quota and rate limit, `loadCandidates()`, `buildPlanContext()`, `generatePlan()` (Claude, structured output, one retry), `finalizePlan()` (post-validation), save with the admin client.
-- Model and effort live in `lib/config.ts` (Haiku 5.5, effort `low`). Prices for the cost column are in `lib/pricing.ts`.
+- Model and effort live in `lib/config.ts` (Haiku 5.5, effort `medium`, chosen by the evals). Prices for the cost column are in `lib/pricing.ts`.
 - `finalizePlan()` enforces what code can check: candidate-only quest ids, a known logout spot, about 10% time slack, length limits. Change prompt rules in `lib/prompts/plan-system.md` and keep its example plan valid (`lib/prompt.test.ts`).
+
+## Evals
+
+- `evals/run_evals.py` uses the app's prompt and `lib/prompts/plan-output.schema.json`. After changing `ModelPlan`, run `pnpm schema:export`.
+- Run `pnpm evals` before and after any prompt, schema, model or effort change; keep `evals/run_evals.py` defaults in sync with `lib/config.ts`.
 
 ## Decisions since the original plan
 

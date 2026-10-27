@@ -35,7 +35,7 @@ Please say hello in Discord before starting on something large, so two people do
 4. Start a local Supabase: `pnpm db:start`, then `pnpm db:env`
 5. Start the dev server: `pnpm dev`. Sign-in emails land in the local inbox at http://127.0.0.1:54324
 6. For the planner (Milestone 3), add your own Claude API key to `.env.development.local`; contributors pay their own inference
-7. For evals (from Milestone 3): `cd evals`, then `pip install -r requirements.txt`, then `python run_evals.py`
+7. For evals: `pnpm evals:setup` once, then `pnpm evals` (see `evals/README.md`)
 
 Never commit `.env.local` or any key.
 

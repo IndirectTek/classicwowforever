@@ -1,0 +1,64 @@
+{
+  "$defs": {
+    "__schema0": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "One short instruction, under 140 characters."
+        },
+        "minutes": {
+          "type": "integer",
+          "description": "{exclusiveMinimum: 0, maximum: 9007199254740991}"
+        },
+        "questIds": {
+          "type": "array",
+          "description": "Ids from candidates only; may be empty.",
+          "items": {
+            "$ref": "#/$defs/__schema1"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "minutes",
+        "questIds"
+      ]
+    },
+    "__schema1": {
+      "type": "string"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "One sentence, under 200 characters."
+    },
+    "steps": {
+      "type": "array",
+      "description": "2 to 6 steps; never more than 8.",
+      "items": {
+        "$ref": "#/$defs/__schema0"
+      },
+      "minItems": 1
+    },
+    "logoutSpotId": {
+      "type": "string",
+      "description": "The id of a rest spot from restSpots."
+    },
+    "why": {
+      "type": "string",
+      "description": "One sentence, under 200 characters."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "summary",
+    "steps",
+    "logoutSpotId",
+    "why"
+  ],
+  "description": "{$schema: \"https://json-schema.org/draft/2020-12/schema\"}"
+}

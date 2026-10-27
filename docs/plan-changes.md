@@ -69,11 +69,18 @@ At Haiku 5.5's list price ($0.10 per million input tokens, $0.50 per million out
 
 ## Milestone 3 notes
 
-- **Model:** Claude Haiku 5.5 at effort `low`, with structured outputs. Haiku 5.5 thinks by default; `low` keeps a plan to 2 to 4 seconds. Raise it only if the evals show better plans.
+- **Model:** Claude Haiku 5.5 with structured outputs, at effort `medium` (Haiku 5.5 thinks by default). The evals settled this: across 14 scenarios, `low` passed 86% with a 2.7s median, and `medium` passed 100% with a 4.1s median, for about $0.00044 a plan instead of $0.00029. At `low`, the model often ran over the session or left no slack.
 - **Measured cost:** about 0.02 cents per plan. That's roughly 550 input tokens, 300 output tokens, and the 2,300-token system prompt read from the prompt cache. Five dollars covers about 25,000 plans, so the free tier could be more generous.
-- **Code-enforced rules:** the model is asked to leave about 10% of the session for travel and logout, and `finalizePlan()` guarantees it. In testing, the model left no slack on its own. It also tends to end in town after selling rather than with an explicit "log out" step. The plan card always shows the logout spot, and the evals should track this rule.
+- **Code-enforced rules:** the model is asked to leave about 10% of the session for travel and logout, and `finalizePlan()` guarantees it either way. After rules 3 and 4 were made concrete in the prompt, every eval plan ended with an explicit logout step.
 - **Length limits** (summary, step text, why) are hints to the model and trimmed in code. Rejecting an over-long reply would cost a retry for nothing.
 - **Shared plans** open signed out, without the feedback form.
+
+## Milestone 4 notes
+
+- `evals/` follows the original spec. Two changes:
+  - The pass rate may drop one scenario's worth below the baseline before the run fails, because model output varies between runs.
+  - The judge is Claude Opus 5.5, with server-side refusal fallbacks enabled.
+- The baseline (October 26, 2026) is 100% over 28 runs: each of the 14 scenarios twice, at effort `medium`.
 
 ## New features
 
