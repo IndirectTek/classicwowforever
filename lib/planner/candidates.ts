@@ -3,6 +3,7 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Candidate, RestSpot } from "./context";
+import type { Dungeon } from "./group";
 
 const MAX_CANDIDATES = 40;
 const LEVEL_WINDOW = 3;
@@ -60,4 +61,20 @@ async function nearbyZones(supabase: SupabaseClient, character: Character): Prom
     .gte("max_level", character.level);
   if (error) throw error;
   return data.map((z) => z.id as string);
+}
+
+// Every dungeon open to this faction. Groups travel, so unlike quests these
+// aren't limited to nearby zones; pickDungeon() chooses by level and time.
+export async function loadDungeons(
+  supabase: SupabaseClient,
+  faction: Character["faction"],
+): Promise<Dungeon[]> {
+  const { data, error } = await supabase
+    .from("game_quests")
+    .select("id, name, zone_id, min_level, max_level, est_minutes")
+    .eq("kind", "dungeon")
+    .or(`faction.is.null,faction.eq.both,faction.eq.${faction}`)
+    .order("min_level");
+  if (error) throw error;
+  return data as Dungeon[];
 }

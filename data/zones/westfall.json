@@ -9,5 +9,17 @@
   "source": "draft-2026-10-26",
   "neighbors": ["duskwood", "elwynn-forest"],
   "restSpots": [],
-  "quests": []
+  "quests": [
+    {
+      "id": "westfall-the-deadmines",
+      "name": "The Deadmines",
+      "levels": [17, 26],
+      "faction": "both",
+      "kind": "dungeon",
+      "estMinutes": 60,
+      "notes": "Entrance through the mine at Moonbrook, in southern Westfall.",
+      "verified": false,
+      "source": "draft-2026-10-28"
+    }
+  ]
 }

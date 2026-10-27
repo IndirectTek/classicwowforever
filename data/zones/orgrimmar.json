@@ -18,5 +18,17 @@
       "source": "draft-2026-10-26"
     }
   ],
-  "quests": []
+  "quests": [
+    {
+      "id": "orgrimmar-ragefire-chasm",
+      "name": "Ragefire Chasm",
+      "levels": [13, 18],
+      "faction": "horde",
+      "kind": "dungeon",
+      "estMinutes": 30,
+      "notes": "Entrance in the Cleft of Shadow, inside Orgrimmar.",
+      "verified": false,
+      "source": "draft-2026-10-28"
+    }
+  ]
 }

@@ -56,7 +56,7 @@ async function Planner({ searchParams }: Pick<PageProps<"/plan">, "searchParams"
   const [{ data: characters }, quota, zones] = await Promise.all([
     supabase
       .from("characters")
-      .select("id, name, level, class, race, zone_id")
+      .select("id, name, level, class, race, faction, zone_id")
       .order("updated_at", { ascending: false }),
     loadQuota(supabase, user.id),
     getZones(),
@@ -128,6 +128,7 @@ async function Planner({ searchParams }: Pick<PageProps<"/plan">, "searchParams"
         initialQuota={quota}
         initialMinutes={parsed.minutes}
         initialGoal={parsed.goal}
+        initialWithGroup={parsed.withGroup}
       />
     </div>
   );
@@ -161,6 +162,7 @@ function NoteSummary({
     parsed.minutes && `${parsed.minutes} min`,
     parsed.goal && goalLabels[parsed.goal],
     character?.name,
+    parsed.withGroup && "with a group",
   ].filter(Boolean);
 
   const differences: string[] = [];

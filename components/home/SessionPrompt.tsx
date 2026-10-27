@@ -32,6 +32,7 @@ export function SessionPrompt({ zones }: { zones: ZoneName[] }) {
         .join(" "),
     zoneName,
     parsed.goal && goalLabels[parsed.goal],
+    parsed.withGroup && "With a group",
   ].filter(Boolean) as string[];
 
   return (

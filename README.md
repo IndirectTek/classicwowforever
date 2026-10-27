@@ -20,6 +20,7 @@ Built so far:
 - Reviewed game data in `data/`, validated in CI and synced to the database on merge
 - Report a quest at `/report`, with a review queue for data keepers (`pnpm reports`)
 - A one-line prompt on the home page that sets up the planner
+- Group sessions: roles, the right dungeon for the group's levels and time, and a plan for the whole party
 
 [docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
 

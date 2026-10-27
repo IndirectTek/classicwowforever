@@ -99,6 +99,15 @@ At Haiku 5.5's list price ($0.10 per million input tokens, $0.50 per million out
 - At most 40 reports per account per day, enforced by a trigger.
 - **Front page prompt.** One line ("45 minutes on my level 12 dwarf hunter, want gold") goes to `/plan?q=`, which picks the character and fills in time and goal. It's parsed by pattern matching in `lib/sessionPrompt.ts`, not by Claude: it's free, instant, works signed out, and is unit tested. If the note describes a character the player hasn't added, the planner offers to add it prefilled. Plans still use the saved character's details, and the page points out any difference.
 
+## Group sessions (pulled forward from Iteration 2)
+
+- **One planner, two modes.** "With a group" on `/plan` adds up to four more players (class, level, preferred role). It goes through the same `/api/plans` route, quota, validation and plan card as a solo plan.
+- **Roles and the dungeon are decided in code**, in `lib/planner/group.ts`, not by the model: which class can tank or heal is a fact, and so is whether a level 14 belongs in a level 25 dungeon. The dungeon must fit everyone's levels and the time (run plus 20 minutes inside the 90% budget), and nearby dungeons beat ones in the other faction's territory. The model gets the result in `group` and plans around it: find missing players, meet at the entrance, the run, the logout.
+- **No other players' names.** Plans can be shared publicly, so a group plan stores only classes, levels and roles.
+- **Draft dungeons.** Ragefire Chasm, Wailing Caverns, The Deadmines, Shadowfang Keep and The Stockade are in `data/` as unverified drafts so the group planner works now. Confirm levels, times and entrances in play.
+- **Evals:** three group scenarios and a `required` check (`require_ids`, `must_mention`). All group runs passed. Solo stayed within tolerance (94% over 34 runs, against a 100% baseline), so the baseline was left as it was. One miss, the 240-minute plan leaving time unused, also happens on the old prompt. The other may be new: the 45-minute relaxed plan ran 2 to 3 minutes over in 2 of 15 runs (none of 5 on the old prompt). `finalizePlan()` scales plans to fit, so players never see it, but watch it in the next eval run.
+- **Next:** invite links so friends join with their own characters, and boss notes from keepers.
+
 ## New features
 
 - **Rested XP calculator** at `/rested`. No AI and no login. It uses classic-era rates, defined as constants in `lib/rested.ts`; confirm them in WoW Forever.

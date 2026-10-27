@@ -16,7 +16,12 @@ export type ParsedPrompt = {
   class?: CharacterClass;
   faction?: Faction;
   zoneId?: string;
+  // Playing with other people tonight ("with friends", "our group", "duo").
+  withGroup?: boolean;
 };
+
+const groupPattern =
+  /\b(group|party|friends?|buddies|buddy|duo|trio|guild ?mates?|with (my|our) (wife|husband|partner|kids?|son|daughter|brother|sister|mates?|crew|guild))\b/;
 
 type ZoneName = { id: string; name: string };
 
@@ -195,6 +200,7 @@ export function parseSessionPrompt(input: string, zones: ZoneName[]): ParsedProm
     if (match && (!goal || match.index < goal.index)) goal = { goal: g, index: match.index };
   }
   if (goal) result.goal = goal.goal;
+  if (groupPattern.test(text)) result.withGroup = true;
 
   return result;
 }

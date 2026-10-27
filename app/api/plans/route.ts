@@ -1,16 +1,19 @@
 // POST /api/plans: generate a session plan. Like a Rails controller `create`
 // action that renders JSON. The steps follow the plan pipeline in the spec:
 // validate, check quota, load the character, pick candidates, call Claude,
-// post-validate, save.
+// post-validate, save. With a `party`, it's a group session: roles and the
+// dungeon are decided in code first (lib/planner/group.ts).
 import { randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth";
 import { CLAUDE_MODEL, FREE_PLANS_PER_WEEK } from "@/lib/config";
-import { loadCandidates } from "@/lib/planner/candidates";
+import type { CharacterClass } from "@/lib/game";
+import { loadCandidates, loadDungeons } from "@/lib/planner/candidates";
 import { buildPlanContext } from "@/lib/planner/context";
 import { finalizePlan } from "@/lib/planner/finalize";
 import { generatePlan, PlanGenerationError } from "@/lib/planner/generate";
+import { groupPlanFacts, PARTY_MAX, PartyMember } from "@/lib/planner/group";
 import { loadQuota } from "@/lib/planner/loadQuota";
 import { costInCents, type Usage } from "@/lib/pricing";
 import { goals, MINUTES_MAX, MINUTES_MIN, type PlanView } from "@/lib/schema";
@@ -22,6 +25,8 @@ const PlanRequest = z.object({
   characterId: z.uuid(),
   minutes: z.number().int().min(MINUTES_MIN).max(MINUTES_MAX),
   goal: z.enum(goals),
+  // Everyone else in the group; leave out for a solo plan.
+  party: z.array(PartyMember).min(1).max(PARTY_MAX).optional(),
 });
 
 const fail = (status: number, error: string) => NextResponse.json({ error }, { status });
@@ -33,7 +38,7 @@ export async function POST(request: Request) {
 
   const input = PlanRequest.safeParse(await request.json().catch(() => null));
   if (!input.success) return fail(400, "Pick a character, a time, and a goal.");
-  const { characterId, minutes, goal } = input.data;
+  const { characterId, minutes, goal, party } = input.data;
 
   // 2. Load the character as the user, so RLS guarantees it's theirs.
   const supabase = await createClient();
@@ -75,11 +80,37 @@ export async function POST(request: Request) {
       .eq("id", requestId);
 
   try {
-    // 4. What the model may choose from.
-    const [{ candidates, restSpots }, zones] = await Promise.all([
-      loadCandidates(supabase, character),
-      getZones(),
-    ]);
+    // 4. What the model may choose from. A group headed to a dungeon gets
+    // the quests and inns around that dungeon instead of around the leader.
+    const zones = await getZones();
+    const group = party
+      ? groupPlanFacts(
+          { class: character.class as CharacterClass, level: character.level },
+          party,
+          {
+            wantsDungeon: goal === "dungeon",
+            dungeons: goal === "dungeon" ? await loadDungeons(supabase, character.faction) : [],
+            minutes,
+            from: {
+              zoneId: character.zone_id,
+              faction: character.faction,
+              zoneFactions: new Map(zones.map((z) => [z.id, z.faction])),
+            },
+          },
+        )
+      : undefined;
+    const around = group?.dungeon
+      ? { ...character, zone_id: group.dungeon.zone_id }
+      : group
+        ? { ...character, level: Math.min(...group.info.members.map((m) => m.level)) }
+        : character;
+    const loaded = await loadCandidates(supabase, around);
+    const { restSpots } = loaded;
+    // The chosen dungeon is always on offer, even past the candidate limit.
+    const candidates =
+      group?.dungeon && !loaded.candidates.some((c) => c.id === group.dungeon!.id)
+        ? [...loaded.candidates, { ...group.dungeon, kind: "dungeon" as const, notes: null }]
+        : loaded.candidates;
     const contextJson = buildPlanContext({
       character: { ...character, zoneId: character.zone_id },
       minutes,
@@ -87,16 +118,20 @@ export async function POST(request: Request) {
       candidates,
       restSpots,
       zoneNames: new Map(zones.map((z) => [z.id, z.name])),
+      group,
     });
 
     // 5. Ask Claude, then check everything it said.
     const generated = await generatePlan(contextJson);
-    const plan = finalizePlan(generated.plan, {
-      minutes,
-      candidates,
-      restSpots,
-      characterZoneId: character.zone_id,
-    });
+    const plan = {
+      ...finalizePlan(generated.plan, {
+        minutes,
+        candidates,
+        restSpots,
+        characterZoneId: around.zone_id,
+      }),
+      ...(group ? { group: group.info } : {}),
+    };
 
     // 6. Save. Only the server writes plans (see the session_plans RLS policy).
     const shareId = randomBytes(16).toString("base64url");

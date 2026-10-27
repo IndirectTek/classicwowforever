@@ -61,4 +61,9 @@ insert into public.rest_spots (id, zone_id, name, kind, faction, verified, sourc
   ('brill-inn', 'tirisfal-glades', 'Gallows'' End Tavern, Brill', 'inn', 'horde', false, 'draft-2026-10-26'),
   ('undercity', 'undercity', 'Undercity', 'city', 'horde', false, 'draft-2026-10-26');
 
--- (no rows for game_quests yet)
+insert into public.game_quests (id, name, zone_id, min_level, max_level, faction, kind, est_minutes, notes, verified, source) values
+  ('orgrimmar-ragefire-chasm', 'Ragefire Chasm', 'orgrimmar', 13, 18, 'horde', 'dungeon', 30, 'Entrance in the Cleft of Shadow, inside Orgrimmar.', false, 'draft-2026-10-28'),
+  ('silverpine-forest-shadowfang-keep', 'Shadowfang Keep', 'silverpine-forest', 22, 30, 'both', 'dungeon', 50, 'The keep above Pyrewood Village, in southern Silverpine.', false, 'draft-2026-10-28'),
+  ('stormwind-city-the-stockade', 'The Stockade', 'stormwind-city', 22, 30, 'alliance', 'dungeon', 40, 'The prison inside Stormwind City.', false, 'draft-2026-10-28'),
+  ('the-barrens-wailing-caverns', 'Wailing Caverns', 'the-barrens', 17, 24, 'both', 'dungeon', 60, 'Entrance in a cave in the hills southwest of the Crossroads.', false, 'draft-2026-10-28'),
+  ('westfall-the-deadmines', 'The Deadmines', 'westfall', 17, 26, 'both', 'dungeon', 60, 'Entrance through the mine at Moonbrook, in southern Westfall.', false, 'draft-2026-10-28');

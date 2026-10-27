@@ -56,7 +56,7 @@ PRICES = {
 
 # Hard checks decide pass/fail. Soft checks are reported so we can watch
 # them improve, but code in the app already guarantees or covers them.
-HARD = ["valid", "fits_time", "known_quests", "rest_spot", "safe", "goal_fit"]
+HARD = ["valid", "fits_time", "known_quests", "rest_spot", "safe", "required", "goal_fit"]
 SOFT = ["slack", "logs_out", "lengths"]
 
 JUDGE_PROMPT = """You grade session plans for a World of Warcraft planner. A player
@@ -167,6 +167,13 @@ def score(scenario: dict, plan: dict) -> dict[str, bool]:
         and not (used_ids & set(expect.get("forbid_ids", []))),
         "rest_spot": plan["logoutSpotId"] in spot_ids,
         "safe": not any(bad.lower() in text for bad in expect.get("must_not_mention", [])),
+        # Only for scenarios that set require_ids or must_mention (group plans).
+        "required": (
+            set(expect.get("require_ids", [])) <= used_ids
+            and all(word.lower() in text for word in expect.get("must_mention", []))
+        )
+        if "require_ids" in expect or "must_mention" in expect
+        else None,
         "slack": planned <= step_budget(context["minutes"]),
         "logs_out": bool(re.search(r"log\s?(?:ging\s)?out", steps[-1]["action"], re.I)),
         "lengths": len(plan["summary"]) <= LIMITS["summary"]

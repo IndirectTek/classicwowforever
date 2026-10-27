@@ -8,7 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { ChipGroup } from "@/components/ui/ChipGroup";
 import { planningLines } from "@/lib/flavor";
-import { label } from "@/lib/game";
+import { label, type CharacterClass, type Faction } from "@/lib/game";
+import type { PartyMember } from "@/lib/planner/group";
 import type { Quota } from "@/lib/quota";
 import {
   goalLabels,
@@ -20,10 +21,17 @@ import {
 } from "@/lib/schema";
 import { examplePlan } from "@/lib/examplePlan";
 import { PlanCard } from "./PlanCard";
+import { PartyEditor } from "./PartyEditor";
 import { PlanFeedback } from "./PlanFeedback";
 import { QuotaPill } from "./QuotaPill";
 
-type CharacterOption = { id: string; name: string; level: number; class: string };
+type CharacterOption = {
+  id: string;
+  name: string;
+  level: number;
+  class: string;
+  faction: Faction;
+};
 
 const presets = [30, 60, 90, 120];
 
@@ -35,6 +43,7 @@ export function PlannerForm({
   initialQuota,
   initialMinutes = 60,
   initialGoal = "xp",
+  initialWithGroup = false,
 }: {
   characters: CharacterOption[];
   initialCharacterId: string;
@@ -42,6 +51,7 @@ export function PlannerForm({
   // From the home page prompt, when it named a time or goal.
   initialMinutes?: number;
   initialGoal?: Goal;
+  initialWithGroup?: boolean;
 }) {
   const [characterId, setCharacterId] = useState(initialCharacterId);
   const [preset, setPreset] = useState<number | "custom">(
@@ -51,6 +61,11 @@ export function PlannerForm({
     String(presets.includes(initialMinutes) ? 75 : initialMinutes),
   );
   const [goal, setGoal] = useState<Goal>(initialGoal);
+  const leader = characters.find((c) => c.id === characterId) ?? characters[0];
+  const [withGroup, setWithGroup] = useState(initialWithGroup);
+  const [party, setParty] = useState<PartyMember[]>(
+    initialWithGroup ? [firstPartyMember(leader.level)] : [],
+  );
   const [quota, setQuota] = useState(initialQuota);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
@@ -72,7 +87,12 @@ export function PlannerForm({
       const response = await fetch("/api/plans", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ characterId, minutes, goal }),
+        body: JSON.stringify({
+          characterId,
+          minutes,
+          goal,
+          ...(withGroup && party.length ? { party } : {}),
+        }),
       });
       const body = await response.json();
       if (!response.ok) {
@@ -98,7 +118,12 @@ export function PlannerForm({
           <span className="mb-2 block text-sm text-text-muted">Character</span>
           <select
             value={characterId}
-            onChange={(e) => setCharacterId(e.target.value)}
+            onChange={(e) => {
+              const next = characters.find((c) => c.id === e.target.value);
+              // Another faction can't share a group (or some classes).
+              if (next?.faction !== leader.faction) setParty([]);
+              setCharacterId(e.target.value);
+            }}
             className="h-11 w-full rounded-lg border border-border bg-background px-3 text-text focus-visible:outline-2 focus-visible:outline-accent sm:h-10"
           >
             {characters.map((c) => (
@@ -108,6 +133,32 @@ export function PlannerForm({
             ))}
           </select>
         </label>
+
+        <div>
+          <ChipGroup
+            legend="Who's playing"
+            options={[
+              { value: "solo", label: "Just me" },
+              { value: "group", label: "With a group" },
+            ]}
+            value={withGroup ? "group" : "solo"}
+            onChange={(v) => {
+              setWithGroup(v === "group");
+              if (v === "group" && !party.length) {
+                setParty([firstPartyMember(leader.level)]);
+              }
+            }}
+          />
+          {withGroup && (
+            <div className="mt-4">
+              <PartyEditor
+                leader={{ ...leader, class: leader.class as CharacterClass }}
+                party={party}
+                onChange={setParty}
+              />
+            </div>
+          )}
+        </div>
 
         <div>
           <ChipGroup
@@ -144,7 +195,10 @@ export function PlannerForm({
         />
 
         <div className="flex flex-wrap items-center gap-3">
-          <Button type="submit" disabled={pending || !minutesValid || outOfPlans}>
+          <Button
+            type="submit"
+            disabled={pending || !minutesValid || outOfPlans || (withGroup && !party.length)}
+          >
             {pending ? "Planning…" : "Plan my session"}
           </Button>
           <QuotaPill quota={quota} />
@@ -168,6 +222,11 @@ export function PlannerForm({
       </div>
     </div>
   );
+}
+
+// A starting row for the party editor; priests are on both sides.
+function firstPartyMember(level: number): PartyMember {
+  return { class: "priest", level, prefers: "any" };
 }
 
 function PlanningSkeleton() {

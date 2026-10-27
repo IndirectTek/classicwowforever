@@ -87,6 +87,15 @@ describe("parseSessionPrompt", () => {
     expect(parse(text).goal).toBe(goal);
   });
 
+  it.each([
+    ["running deadmines with friends", true],
+    ["duo with my wife, 2 hours", true],
+    ["quests with my brother", true],
+    ["solo hunter, an hour", undefined],
+  ])("notices a group in %j", (text, withGroup) => {
+    expect(parse(text).withGroup).toBe(withGroup);
+  });
+
   it("returns nothing for a note it can't read", () => {
     expect(parse("hello there")).toEqual({});
   });
