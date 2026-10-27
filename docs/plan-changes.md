@@ -39,15 +39,16 @@ In Milestone 3, if the model picks an unknown spot, the plan route should swap i
 
 ## Before Milestone 2: email
 
-Supabase's built-in email sender is limited to a handful of messages per hour and isn't meant for production. On launch week, magic links would quietly stop arriving.
+Supabase's built-in email sender is limited to a handful of messages per hour and isn't meant for production. On launch week, magic links would quietly stop arriving. We send through Postmark instead.
 
-1. Create an account with a transactional email provider (Resend, Postmark, or similar).
-2. Verify `classicwowforever.dev` with it (SPF and DKIM records in Vercel DNS).
-3. In Supabase, go to **Authentication > Emails > SMTP Settings**, enable custom SMTP, and enter the provider's credentials. Use a sender like `hello@classicwowforever.dev`.
-4. In **Authentication > Rate Limits**, raise the email limit to match expected signups.
-5. In **Authentication > URL Configuration**, set the Site URL to `https://classicwowforever.dev` and add the Vercel preview URL pattern to the redirect allow list.
+1. **Verify the domain in Postmark** (Sender Signatures → Add Domain → `classicwowforever.dev`). Add the records it shows to Cloudflare, with the proxy off:
+   - the DKIM `TXT` record (its name ends in `pm._domainkey`)
+   - the Return-Path `CNAME`: `pm-bounces` → `pm.mtasv.net`
+   - a DMARC `TXT` record at `_dmarc`, for example `v=DMARC1; p=none; rua=mailto:hello@classicwowforever.dev`
+2. **Request Postmark account approval.** New accounts can only send to addresses on their own verified domain until Postmark approves them.
+3. **Apply the Supabase Auth settings** with `scripts/configure-supabase-auth.sh`. It sets Postmark SMTP (`smtp.postmarkapp.com:587`, sender `hello@classicwowforever.dev`), the sign-in email from `supabase/templates/magic-link.html`, an email rate limit of 100 per hour, the Site URL, and the redirect URLs for production, Vercel previews and localhost. It needs `SUPABASE_ACCESS_TOKEN` in `.env.local`, a personal access token from https://supabase.com/dashboard/account/tokens. Run it with `--dry-run` first to see the payload with secrets hidden. The sign-in link uses `token_hash`, so it works when the email is opened on a different device than the one that asked for it.
 
-The same provider can send the "planner is open" email to the waitlist.
+The same Postmark server can send the "planner is open" email to the waitlist; use a separate broadcast message stream for it, since Postmark keeps bulk mail apart from sign-in links.
 
 ## The prompt and the model
 

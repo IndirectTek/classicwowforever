@@ -2,3 +2,4 @@ pnpm-lock.yaml
 LICENSE
 assets/
 lib/prompts/
+supabase/templates/
