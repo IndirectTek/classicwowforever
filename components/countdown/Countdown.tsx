@@ -2,6 +2,8 @@
 
 // Client Component: the browser owns the clock. Think of it as the one bit of
 // Stimulus on an otherwise server-rendered page.
+import Link from "next/link";
+import { buttonClasses } from "@/components/ui/Button";
 import { useNow } from "@/lib/hooks/useNow";
 import { LAUNCH_AT, timeLeft } from "@/lib/launch";
 
@@ -13,7 +15,14 @@ export function Countdown() {
   const left = now === null ? null : timeLeft(now);
 
   if (now !== null && left === null) {
-    return <p className="font-display text-3xl text-accent sm:text-5xl">The realms are open.</p>;
+    return (
+      <div>
+        <p className="font-display text-3xl text-accent sm:text-5xl">The realms are open.</p>
+        <Link href="/plan" className={buttonClasses("primary", "mt-6")}>
+          Plan tonight&apos;s session
+        </Link>
+      </div>
+    );
   }
 
   return (

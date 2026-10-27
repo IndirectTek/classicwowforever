@@ -15,8 +15,9 @@ Built so far:
 - An example plan at `/p/example` with a working session timer
 - The database schema for Milestones 2 and 3, with tested security rules
 - Magic-link sign-in and the Characters pages (Milestone 2)
+- The planner at `/plan`, with quota, feedback and shareable plans (Milestone 3)
 
-Next up is the planner (Milestone 3). [docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
+Next up is the eval harness (Milestone 4). [docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
 
 ## Stack
 
@@ -32,7 +33,8 @@ You need Node.js (latest LTS), pnpm, and Docker.
 1. `pnpm install`
 2. `pnpm db:start` starts a local Supabase (Postgres, Auth, and a test inbox) in Docker. It applies `supabase/migrations/` and `supabase/seed.sql` automatically. The first run downloads a few images.
 3. `pnpm db:env` writes `.env.development.local` with your local Supabase URL and keys.
-4. `pnpm dev`, then open http://localhost:3000.
+4. For the planner, put your own `ANTHROPIC_API_KEY` in `.env.development.local` (or `.env.local`).
+5. `pnpm dev`, then open http://localhost:3000.
 
 Sign in with any address: the email lands in the local inbox at http://127.0.0.1:54324, not a real mailbox. `pnpm dev` always uses the local database; `.env.local` holds production values for scripts and is never used in development.
 

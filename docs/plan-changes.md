@@ -67,6 +67,14 @@ At Haiku 5.5's list price ($0.10 per million input tokens, $0.50 per million out
 - Use structured outputs (`output_config.format`, or the SDK's `messages.parse()` with a Zod schema) rather than asking for JSON in prose.
 - Don't send `temperature`, `top_p` or `top_k`; the API now rejects them. The eval harness shouldn't send them either.
 
+## Milestone 3 notes
+
+- **Model:** Claude Haiku 5.5 at effort `low`, with structured outputs. Haiku 5.5 thinks by default; `low` keeps a plan to 2 to 4 seconds. Raise it only if the evals show better plans.
+- **Measured cost:** about 0.02 cents per plan. That's roughly 550 input tokens, 300 output tokens, and the 2,300-token system prompt read from the prompt cache. Five dollars covers about 25,000 plans, so the free tier could be more generous.
+- **Code-enforced rules:** the model is asked to leave about 10% of the session for travel and logout, and `finalizePlan()` guarantees it. In testing, the model left no slack on its own. It also tends to end in town after selling rather than with an explicit "log out" step. The plan card always shows the logout spot, and the evals should track this rule.
+- **Length limits** (summary, step text, why) are hints to the model and trimmed in code. Rejecting an over-long reply would cost a retry for nothing.
+- **Shared plans** open signed out, without the feedback form.
+
 ## New features
 
 - **Rested XP calculator** at `/rested`. No AI and no login. It uses classic-era rates, defined as constants in `lib/rested.ts`; confirm them in WoW Forever.

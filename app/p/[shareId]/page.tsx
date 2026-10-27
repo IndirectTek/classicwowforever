@@ -42,10 +42,10 @@ export default async function SharedPlanPage({ params }: PageProps<"/p/[shareId]
       )}
       <PlanCard view={view} />
       <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-        <Link href="/#waitlist" className={buttonClasses("primary")}>
+        <Link href="/plan" className={buttonClasses("primary")}>
           Plan your own session
         </Link>
-        <p className="text-sm text-text-muted">The planner opens shortly after launch.</p>
+        <p className="text-sm text-text-muted">Free: 3 plans a week.</p>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { stepBudget } from "./planner/finalize";
 import { ModelPlan } from "./schema";
 
 // lib/prompt.ts is server-only, so read the same file directly.
@@ -22,5 +23,16 @@ describe("plan system prompt", () => {
 
   it("contains nothing that changes per request, which would defeat prompt caching", () => {
     expect(prompt).not.toMatch(/\{\{|\$\{/);
+  });
+});
+
+describe("the prompt's example plan follows its own rules", () => {
+  it("leaves slack and ends by logging out", () => {
+    const blocks = [...prompt.matchAll(/```json\n([\s\S]*?)```/g)].map((m) => m[1]);
+    const context = JSON.parse(blocks[0]);
+    const plan = JSON.parse(blocks.at(-1)!);
+    const total = plan.steps.reduce((s: number, x: { minutes: number }) => s + x.minutes, 0);
+    expect(total).toBeLessThanOrEqual(stepBudget(context.minutes));
+    expect(plan.steps.at(-1).action).toMatch(/log out/i);
   });
 });

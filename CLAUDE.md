@@ -32,6 +32,12 @@ A longtime Ruby on Rails engineer learning Next.js, React, and Python. When you 
 - Sign-in emails link to `/auth/confirm?token_hash=...` (see `supabase/templates/magic-link.html`). Production Auth settings are applied with `scripts/configure-supabase-auth.sh`; local ones live in `supabase/config.toml`.
 - User-owned queries use `lib/supabase/server.ts` so RLS applies.
 
+## Planner
+
+- `POST /api/plans` (`app/api/plans/route.ts`): auth, `reserve_plan_request()` for quota and rate limit, `loadCandidates()`, `buildPlanContext()`, `generatePlan()` (Claude, structured output, one retry), `finalizePlan()` (post-validation), save with the admin client.
+- Model and effort live in `lib/config.ts` (Haiku 5.5, effort `low`). Prices for the cost column are in `lib/pricing.ts`.
+- `finalizePlan()` enforces what code can check: candidate-only quest ids, a known logout spot, about 10% time slack, length limits. Change prompt rules in `lib/prompts/plan-system.md` and keep its example plan valid (`lib/prompt.test.ts`).
+
 ## Decisions since the original plan
 
 See `docs/plan-changes.md`. In short: quota lives in `plan_requests` (per profile, enforced by `reserve_plan_request()`); the model returns ids only (`ModelPlan`) and we store resolved names (`StoredPlan`); shared plans are read through `get_shared_plan()`; the system prompt is `lib/prompts/plan-system.md`, shared with the evals.

@@ -14,8 +14,8 @@ Reply with a plan in the requested JSON format.
 
 1. Only reference quests and dungeons from `candidates`, and only by their `id` in `questIds`. Never invent quest, NPC, or item names, and never mention a quest in `action` text that isn't in `questIds`.
 2. If `candidates` is empty or has too little to fill the time, give activity-level advice instead, without naming specific quests. For example: "Finish the quests already in your log in this zone", "Grind mobs near your level on the way to town", or "Train new skills and sell your bags".
-3. Fit the plan inside `minutes`. The sum of step minutes must leave roughly 5 to 10 percent of the session for travel and logging out, and never exceed `minutes`.
-4. The last step always ends at a rest spot. Set `logoutSpotId` to the `id` of a spot from `restSpots`, preferring the closest one to where the final step happens. Logging out in an inn or city earns rested XP for the next session.
+3. Fit the plan inside `minutes`, with slack. The step minutes must add up to no more than about 90 percent of `minutes` (for a 60 minute session, at most 54), so travel and surprises don't push the player past their time.
+4. The last step is always getting to a rest spot and logging out there, for example "Head back to Goldshire, sell your bags, and log out at the inn". Set `logoutSpotId` to the `id` of that spot from `restSpots`, preferring the closest one to where the session ends. Logging out in an inn or city earns rested XP for the next session.
 5. Respect the goal:
    - `xp`: favor quest density and short travel; group quests that share an area.
    - `gold`: favor turn-ins with money rewards, sellable loot, and a stop at a vendor.
@@ -74,11 +74,11 @@ Plan:
     { "action": "Complete Example Quest B in the same area", "minutes": 20, "questIds": ["q-102"] },
     {
       "action": "Grind mobs near your level on the way back to town",
-      "minutes": 12,
+      "minutes": 10,
       "questIds": []
     },
     {
-      "action": "Turn in both quests, sell your bags, and visit your trainer in Goldshire",
+      "action": "Turn in both quests in Goldshire, sell your bags, and log out at the inn",
       "minutes": 8,
       "questIds": []
     }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CharacterDialog } from "@/components/characters/CharacterDialog";
+import { buttonClasses } from "@/components/ui/Button";
 import { formatDate } from "@/components/characters/CharacterCard";
 import { requireUser } from "@/lib/auth";
 import type { Character } from "@/lib/characters";
@@ -68,7 +69,12 @@ async function CharacterDetail({ params }: Pick<PageProps<"/characters/[id]">, "
           </p>
           <p className="mt-1 text-sm text-text-muted">{zoneName ?? "Zone not set"}</p>
         </div>
-        <CharacterDialog zones={zones} character={character} trigger="button" />
+        <div className="flex gap-2">
+          <Link href={`/plan?character=${character.id}`} className={buttonClasses("primary")}>
+            Plan a session
+          </Link>
+          <CharacterDialog zones={zones} character={character} trigger="button" />
+        </div>
       </header>
 
       <section aria-labelledby="history" className="mt-12">
@@ -93,10 +99,7 @@ async function CharacterDetail({ params }: Pick<PageProps<"/characters/[id]">, "
           </ol>
         ) : (
           <div className="mt-4 rounded-lg border border-dashed border-border p-6 text-text-muted">
-            <p>
-              No plans yet. Once the planner opens, every session you plan for {character.name}
-              shows up here.
-            </p>
+            <p>No plans yet. Every session you plan for {character.name} shows up here.</p>
             <Link
               href="/p/example"
               className="mt-2 inline-block text-accent underline underline-offset-2"

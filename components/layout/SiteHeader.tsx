@@ -40,7 +40,12 @@ async function SessionNav() {
 
 // signedIn is null while the session is still loading.
 function HeaderNav({ signedIn }: { signedIn: boolean | null }) {
-  const accountLinks: NavLink[] = signedIn ? [{ href: "/characters", label: "Characters" }] : [];
+  const accountLinks: NavLink[] = signedIn
+    ? [
+        { href: "/plan", label: "Planner" },
+        { href: "/characters", label: "Characters" },
+      ]
+    : [];
   const links = [...accountLinks, ...publicLinks];
 
   return (
