@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "loch-modan",
+  "name": "Loch Modan",
+  "levels": [10, 20],
+  "faction": "alliance",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["dun-morogh"],
+  "restSpots": [
+    {
+      "id": "thelsamar-inn",
+      "name": "Stoutlager Inn, Thelsamar",
+      "kind": "inn",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

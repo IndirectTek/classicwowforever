@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "darnassus",
+  "name": "Darnassus",
+  "levels": [1, 60],
+  "faction": "alliance",
+  "kind": "city",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["teldrassil"],
+  "restSpots": [
+    {
+      "id": "darnassus",
+      "name": "Darnassus",
+      "kind": "city",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

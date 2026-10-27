@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "durotar",
+  "name": "Durotar",
+  "levels": [1, 10],
+  "faction": "horde",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["orgrimmar", "the-barrens"],
+  "restSpots": [
+    {
+      "id": "razor-hill-inn",
+      "name": "The inn at Razor Hill",
+      "kind": "inn",
+      "faction": "horde",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

@@ -1,0 +1,50 @@
+name: Quest data
+description: Tell us about a quest you saw in WoW Forever (no JSON needed)
+labels: [data]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! Only report what you saw in your own play or in official patch notes. Please don't copy from wikis or other sites.
+        Submissions are released under CC BY-SA 4.0.
+  - type: input
+    id: name
+    attributes: { label: Quest name, placeholder: The Lost Satchel }
+    validations: { required: true }
+  - type: input
+    id: zone
+    attributes: { label: Zone, placeholder: Elwynn Forest }
+    validations: { required: true }
+  - type: input
+    id: levels
+    attributes:
+      {
+        label: Level range,
+        description: The level shown in your quest log,
+        and roughly the highest it still made sense,
+        placeholder: "5 to 7",
+      }
+    validations: { required: true }
+  - type: dropdown
+    id: faction
+    attributes: { label: Faction, options: [Alliance, Horde, Both] }
+    validations: { required: true }
+  - type: input
+    id: minutes
+    attributes:
+      {
+        label: About how many minutes did it take?,
+        description: For a typical player,
+        not a speedrun,
+      }
+  - type: textarea
+    id: notes
+    attributes:
+      {
+        label: Anything useful for planning?,
+        placeholder: "Rewards, where to go, whether it needs a group",
+      }
+  - type: input
+    id: seen
+    attributes: { label: When did you see it?, placeholder: "2026-11-04" }
+    validations: { required: true }

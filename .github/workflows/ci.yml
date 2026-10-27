@@ -1,0 +1,27 @@
+# Runs on every pull request and every push to main. Make "CI" a required
+# check in the branch protection rules for main.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4 # version comes from "packageManager" in package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm data:check
+      - run: pnpm build
+      - name: Evals script compiles (the evals themselves cost money, so run them locally)
+        run: python3 -m py_compile evals/run_evals.py

@@ -82,6 +82,15 @@ At Haiku 5.5's list price ($0.10 per million input tokens, $0.50 per million out
   - The judge is Claude Opus 5.5, with server-side refusal fallbacks enabled.
 - The baseline (October 26, 2026) is 100% over 28 runs: each of the 14 scenarios twice, at effort `medium`.
 
+## Game data in this repo (pulled forward from Iteration 2)
+
+- `data/zones/*.json` holds one file per zone, with its neighbors, inns and quests. It's the source of truth, CC BY-SA 4.0.
+- **Provenance:** every entry carries `source` (`play-`, `patch-notes-` or `draft-` plus a date) and `verified`; entries from play also need a `contributor`. Git history adds who changed what.
+- **Checks:** `pnpm data:check` and the test suite validate every file and the rules that span files. CI runs on every pull request.
+- **Sync:** `pnpm data:sync` upserts into a database, as a dry run until `--yes`. `--prune` also removes deleted quests and inns; zones are never deleted, because characters point at them. The "Sync game data" workflow runs it on merges to `main` once the `SUPABASE_URL` and `SUPABASE_SECRET_KEY` repository secrets exist. This replaces the nightly cron in the original plan: syncing on merge is sooner and does less work.
+- `supabase/seed.sql` is now generated from `data/` (`pnpm data:generate`).
+- **Moving out later:** when outside data contributors arrive, `data/` can move to the planned `classicwowforever_data` repo, with the same files, checks and sync.
+
 ## New features
 
 - **Rested XP calculator** at `/rested`. No AI and no login. It uses classic-era rates, defined as constants in `lib/rested.ts`; confirm them in WoW Forever.

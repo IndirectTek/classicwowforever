@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "dun-morogh",
+  "name": "Dun Morogh",
+  "levels": [1, 10],
+  "faction": "alliance",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["ironforge", "loch-modan"],
+  "restSpots": [
+    {
+      "id": "kharanos-inn",
+      "name": "Thunderbrew Distillery, Kharanos",
+      "kind": "inn",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

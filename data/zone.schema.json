@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 60
+    },
+    "levels": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "[lowest, highest] level, 1 to 60"
+    },
+    "faction": {
+      "type": "string",
+      "enum": [
+        "alliance",
+        "horde",
+        "contested"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "zone",
+        "city"
+      ]
+    },
+    "neighbors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "description": "Ids of zones you can walk or ride to directly"
+    },
+    "restSpots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "inn",
+              "city"
+            ]
+          },
+          "faction": {
+            "type": "string",
+            "enum": [
+              "alliance",
+              "horde",
+              "both"
+            ]
+          },
+          "verified": {
+            "type": "boolean",
+            "description": "true once someone has confirmed it in WoW Forever"
+          },
+          "source": {
+            "type": "string",
+            "pattern": "^(play|patch-notes|draft)-\\d{4}-\\d{2}-\\d{2}$",
+            "description": "play-YYYY-MM-DD for your own play, patch-notes-YYYY-MM-DD, or draft-YYYY-MM-DD"
+          },
+          "contributor": {
+            "description": "Who added or last confirmed it (your display name)",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "faction",
+          "verified",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "quests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "description": "<zone id>-<quest name>, e.g. elwynn-forest-the-lost-satchel"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "levels": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 60
+              },
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 60
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "[lowest, highest] level, 1 to 60"
+          },
+          "faction": {
+            "type": "string",
+            "enum": [
+              "alliance",
+              "horde",
+              "both"
+            ]
+          },
+          "kind": {
+            "default": "quest",
+            "type": "string",
+            "enum": [
+              "quest",
+              "dungeon"
+            ]
+          },
+          "estMinutes": {
+            "description": "Typical time for an average player, not a speedrunner",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 240
+          },
+          "notes": {
+            "description": "Short, useful facts for planning",
+            "type": "string",
+            "maxLength": 300
+          },
+          "verified": {
+            "type": "boolean",
+            "description": "true once someone has confirmed it in WoW Forever"
+          },
+          "source": {
+            "type": "string",
+            "pattern": "^(play|patch-notes|draft)-\\d{4}-\\d{2}-\\d{2}$",
+            "description": "play-YYYY-MM-DD for your own play, patch-notes-YYYY-MM-DD, or draft-YYYY-MM-DD"
+          },
+          "contributor": {
+            "description": "Who added or last confirmed it (your display name)",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "levels",
+          "faction",
+          "verified",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "verified": {
+      "type": "boolean",
+      "description": "true once someone has confirmed it in WoW Forever"
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^(play|patch-notes|draft)-\\d{4}-\\d{2}-\\d{2}$",
+      "description": "play-YYYY-MM-DD for your own play, patch-notes-YYYY-MM-DD, or draft-YYYY-MM-DD"
+    },
+    "contributor": {
+      "description": "Who added or last confirmed it (your display name)",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "levels",
+    "faction",
+    "kind",
+    "neighbors",
+    "restSpots",
+    "quests",
+    "verified",
+    "source"
+  ],
+  "additionalProperties": false
+}

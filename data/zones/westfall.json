@@ -1,0 +1,13 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "westfall",
+  "name": "Westfall",
+  "levels": [10, 20],
+  "faction": "alliance",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["duskwood", "elwynn-forest"],
+  "restSpots": [],
+  "quests": []
+}

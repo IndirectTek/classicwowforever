@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "tirisfal-glades",
+  "name": "Tirisfal Glades",
+  "levels": [1, 10],
+  "faction": "horde",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["silverpine-forest", "undercity"],
+  "restSpots": [
+    {
+      "id": "brill-inn",
+      "name": "Gallows' End Tavern, Brill",
+      "kind": "inn",
+      "faction": "horde",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

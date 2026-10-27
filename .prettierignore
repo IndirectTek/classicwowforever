@@ -3,3 +3,4 @@ LICENSE
 assets/
 lib/prompts/
 supabase/templates/
+data/zone.schema.json
