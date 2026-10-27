@@ -91,6 +91,14 @@ At Haiku 5.5's list price ($0.10 per million input tokens, $0.50 per million out
 - `supabase/seed.sql` is now generated from `data/` (`pnpm data:generate`).
 - **Moving out later:** when outside data contributors arrive, `data/` can move to the planned `classicwowforever_data` repo, with the same files, checks and sync.
 
+## Launch features (pulled forward from Milestone 5)
+
+- **Report a quest** at `/report`. Reports go into `quest_reports` (users can add, see and withdraw their own new ones; only the secret key changes a status), never straight into the planner. A data keeper runs `pnpm reports apply`, reviews the diff to `data/zones/` in a pull request, and closes the reports once it merges. That replaces "turned into data pull requests automatically" in the original plan: a human still reads every report first, and there's no bot account to manage.
+- A report for a quest the zone already has becomes a **correction** (matched by name). Corrections are applied by hand.
+- **Classic Era play counts as a source** until launch. Reports record where the quest was played, and everything from a report starts `verified: false`, so the team can collect data now and confirm it in WoW Forever.
+- At most 40 reports per account per day, enforced by a trigger.
+- **Front page prompt.** One line ("45 minutes on my level 12 dwarf hunter, want gold") goes to `/plan?q=`, which picks the character and fills in time and goal. It's parsed by pattern matching in `lib/sessionPrompt.ts`, not by Claude: it's free, instant, works signed out, and is unit tested. If the note describes a character the player hasn't added, the planner offers to add it prefilled. Plans still use the saved character's details, and the page points out any difference.
+
 ## New features
 
 - **Rested XP calculator** at `/rested`. No AI and no login. It uses classic-era rates, defined as constants in `lib/rested.ts`; confirm them in WoW Forever.

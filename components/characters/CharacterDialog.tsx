@@ -10,15 +10,27 @@ import type { Character } from "@/lib/characters";
 import { classesFor, label, racesFor, type Faction, type Race } from "@/lib/game";
 import type { Zone } from "@/lib/zones";
 
+// Starting values for a new character, e.g. from the home page prompt.
+export type CharacterPrefill = {
+  faction: Faction;
+  race: Race;
+  class: string;
+  level?: number;
+  zone_id?: string;
+};
+
 type Props = {
   zones: Zone[];
   character?: Character;
+  prefill?: CharacterPrefill;
   trigger: "card" | "button";
+  // Text for the "button" trigger. Defaults to "Edit".
+  triggerLabel?: string;
 };
 
 const initialState: CharacterFormState = { status: "idle" };
 
-export function CharacterDialog({ zones, character, trigger }: Props) {
+export function CharacterDialog({ zones, character, prefill, trigger, triggerLabel }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   // Bumped after each save so the form remounts: a fresh "Add" form, or an
   // "Edit" form showing the saved values (and no leftover "saved" state).
@@ -38,8 +50,11 @@ export function CharacterDialog({ zones, character, trigger }: Props) {
           Add character
         </button>
       ) : (
-        <Button variant="secondary" onClick={() => dialogRef.current?.showModal()}>
-          Edit
+        <Button
+          variant={triggerLabel ? "primary" : "secondary"}
+          onClick={() => dialogRef.current?.showModal()}
+        >
+          {triggerLabel ?? "Edit"}
         </Button>
       )}
 
@@ -52,6 +67,7 @@ export function CharacterDialog({ zones, character, trigger }: Props) {
           key={formKey}
           zones={zones}
           character={character}
+          prefill={prefill}
           onDone={() => {
             dialogRef.current?.close();
             setFormKey((k) => k + 1);
@@ -66,18 +82,21 @@ export function CharacterDialog({ zones, character, trigger }: Props) {
 function CharacterForm({
   zones,
   character,
+  prefill,
   onDone,
   onCancel,
 }: {
   zones: Zone[];
   character?: Character;
+  prefill?: CharacterPrefill;
   onDone: () => void;
   onCancel: () => void;
 }) {
   const [state, formAction, pending] = useActionState(saveCharacter, initialState);
-  const [faction, setFaction] = useState<Faction>(character?.faction ?? "alliance");
-  const [race, setRace] = useState<Race>((character?.race as Race) ?? racesFor(faction)[0]);
-  const [charClass, setCharClass] = useState<string>(character?.class ?? classesFor(race)[0]);
+  const start = character ?? prefill;
+  const [faction, setFaction] = useState<Faction>(start?.faction ?? "alliance");
+  const [race, setRace] = useState<Race>((start?.race as Race) ?? racesFor(faction)[0]);
+  const [charClass, setCharClass] = useState<string>(start?.class ?? classesFor(race)[0]);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   // Close once the save lands (the dialog lives outside React's state).
@@ -182,7 +201,7 @@ function CharacterForm({
             inputMode="numeric"
             min={1}
             max={60}
-            defaultValue={typed?.level ?? character?.level ?? 1}
+            defaultValue={typed?.level ?? start?.level ?? 1}
             className={`${inputClass} font-mono`}
           />
         </Field>
@@ -192,7 +211,7 @@ function CharacterForm({
         <Field label="Current zone (optional)" error={errors.zone_id}>
           <select
             name="zone_id"
-            defaultValue={typed?.zone_id ?? character?.zone_id ?? ""}
+            defaultValue={typed?.zone_id ?? start?.zone_id ?? ""}
             key={faction}
             className={inputClass}
           >

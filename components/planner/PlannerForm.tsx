@@ -33,15 +33,24 @@ export function PlannerForm({
   characters,
   initialCharacterId,
   initialQuota,
+  initialMinutes = 60,
+  initialGoal = "xp",
 }: {
   characters: CharacterOption[];
   initialCharacterId: string;
   initialQuota: Quota;
+  // From the home page prompt, when it named a time or goal.
+  initialMinutes?: number;
+  initialGoal?: Goal;
 }) {
   const [characterId, setCharacterId] = useState(initialCharacterId);
-  const [preset, setPreset] = useState<number | "custom">(60);
-  const [custom, setCustom] = useState("75");
-  const [goal, setGoal] = useState<Goal>("xp");
+  const [preset, setPreset] = useState<number | "custom">(
+    presets.includes(initialMinutes) ? initialMinutes : "custom",
+  );
+  const [custom, setCustom] = useState(
+    String(presets.includes(initialMinutes) ? 75 : initialMinutes),
+  );
+  const [goal, setGoal] = useState<Goal>(initialGoal);
   const [quota, setQuota] = useState(initialQuota);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
