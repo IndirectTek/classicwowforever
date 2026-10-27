@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { saveFeedback } from "@/app/actions/feedback";
 import { Button } from "@/components/ui/Button";
@@ -81,6 +82,12 @@ export function PlanFeedback({ planId }: { planId: string }) {
           )}
         </p>
       </div>
+      <p className="mt-4 border-t border-border pt-3 text-sm text-text-muted">
+        A quest wrong, or one we should know about?{" "}
+        <Link href="/report" className="text-accent underline underline-offset-2">
+          Report a quest
+        </Link>
+      </p>
     </section>
   );
 }

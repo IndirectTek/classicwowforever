@@ -18,5 +18,17 @@
       "source": "draft-2026-10-26"
     }
   ],
-  "quests": []
+  "quests": [
+    {
+      "id": "stormwind-city-the-stockade",
+      "name": "The Stockade",
+      "levels": [22, 30],
+      "faction": "alliance",
+      "kind": "dungeon",
+      "estMinutes": 40,
+      "notes": "The prison inside Stormwind City.",
+      "verified": false,
+      "source": "draft-2026-10-28"
+    }
+  ]
 }

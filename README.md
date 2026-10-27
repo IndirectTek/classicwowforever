@@ -17,7 +17,12 @@ Built so far:
 - Magic-link sign-in and the Characters pages (Milestone 2)
 - The planner at `/plan`, with quota, feedback and shareable plans (Milestone 3)
 - Planner evals in `evals/` (Milestone 4)
-- Reviewed game data in `data/`, validated in CI and synced to the database on merge [docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
+- Reviewed game data in `data/`, validated in CI and synced to the database on merge
+- Report a quest at `/report`, with a review queue for data keepers (`pnpm reports`)
+- A one-line prompt on the home page that sets up the planner
+- Group sessions: roles, the right dungeon for the group's levels and time, and a plan for the whole party
+
+[docs/plan-changes.md](docs/plan-changes.md) records the decisions made since the original plan.
 
 ## Stack
 
@@ -53,6 +58,7 @@ Sign in with any address: the email lands in the local inbox at http://127.0.0.1
 | `pnpm data:check`    | Validate the game data in `data/zones/`                                             |
 | `pnpm data:sync`     | Copy game data into a database (`--local` or `--production`; dry run until `--yes`) |
 | `pnpm data:generate` | Regenerate `supabase/seed.sql` and the data JSON Schema from `data/`                |
+| `pnpm reports`       | Review players' quest reports and add them to `data/` (see `data/README.md`)        |
 
 ## Project layout
 

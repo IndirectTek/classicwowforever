@@ -5,8 +5,9 @@ The planner can only suggest quests that are listed here. One file per zone in
 is the source of truth: merged changes are copied into the database
 automatically, and every change is reviewed in a pull request first.
 
-**You don't need to code to help.** If JSON isn't your thing, open a
-[Quest data issue](../../../issues/new?template=quest-data.yml) and a data
+**You don't need to code to help.** If JSON isn't your thing, use
+[Report a quest](https://classicwowforever.dev/report) on the site, or open a
+[Quest data issue](../../../issues/new?template=quest-data.yml), and a data
 keeper will add it for you.
 
 ## The rules
@@ -14,6 +15,8 @@ keeper will add it for you.
 - **Only what you saw yourself** in WoW Forever, or what official Blizzard patch
   notes say. Never copy from wikis, databases or other guide sites, even to fill
   a gap. That's what keeps this data ours to share.
+- **Before launch, Classic Era play counts** as a `play-` source, but leave it
+  `verified: false`: WoW Forever may change it.
 - **Say where it came from.** Every entry has a `source`:
   - `play-YYYY-MM-DD`, the day you saw it, plus your display name in `contributor`
   - `patch-notes-YYYY-MM-DD`, the date of the notes
@@ -66,6 +69,25 @@ pnpm data:sync --local --yes    # applies it, so you can try plans with it
 
 CI runs `pnpm data:check` on every pull request too, so you can also just open the
 PR and read the result.
+
+## Reports from the site
+
+Players' reports from `/report` wait in a queue in the database. Data keepers
+turn them into a pull request:
+
+```sh
+pnpm reports --production                 # list reports waiting for review
+pnpm reports apply --production           # add the new quests to zones/*.json
+pnpm data:check                           # then review the diff and open a PR
+pnpm reports close applied <id...> --production    # once the PR merges
+pnpm reports close duplicate <id...> --production  # or rejected
+```
+
+`apply` adds each new quest once (later reports of the same quest are listed
+as duplicates), always as `verified: false`, crediting the reporter's chosen
+name or "community". Reports for a quest we already have are corrections: the
+script lists them and you edit the entry by hand. Check names and levels
+against your own play before merging; a report is a lead, not a fact.
 
 ## After merge
 

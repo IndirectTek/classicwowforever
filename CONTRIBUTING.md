@@ -6,14 +6,14 @@ You don't need to write code to make a big difference here. Good game data matte
 
 ## Ways to contribute
 
-| If you like to...      | Start here                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------- |
-| Play and notice things | Use "Report a quest" on the site, or the "Something wrong with this step?" button on any plan |
-| Keep data accurate     | Review and fix quest data in the `classicwowforever_data` repo                                |
-| Build UI               | Issues labeled `frontend` (Next.js, React, Tailwind)                                          |
-| Work on AI and quality | Issues labeled `evals` or `prompt` (Python eval harness, prompt changes)                      |
-| Write Lua              | Issues labeled `addon` (arrives in Iteration 2)                                               |
-| Improve docs           | Anything labeled `docs`, or fix whatever confused you while setting up                        |
+| If you like to...      | Start here                                                               |
+| ---------------------- | ------------------------------------------------------------------------ |
+| Play and notice things | Use [Report a quest](https://classicwowforever.dev/report) on the site   |
+| Keep data accurate     | Review and fix quest data in [`data/`](data/README.md)                   |
+| Build UI               | Issues labeled `frontend` (Next.js, React, Tailwind)                     |
+| Work on AI and quality | Issues labeled `evals` or `prompt` (Python eval harness, prompt changes) |
+| Write Lua              | Issues labeled `addon` (arrives in Iteration 2)                          |
+| Improve docs           | Anything labeled `docs`, or fix whatever confused you while setting up   |
 
 New here? Look for issues labeled `good first issue`.
 
@@ -60,7 +60,7 @@ Never commit `.env.local` or any key.
 
 ## Game data rules
 
-- Data must come from your own play or from official Blizzard patch notes
+- Data must come from your own play or from official Blizzard patch notes. Until launch, Classic Era play counts too, as unverified entries to confirm in WoW Forever
 - Do not copy from fan wikis, databases, or other guide sites
 - Every record carries its source; for your own play, the source is `play` plus the date
 - When you correct an existing record, explain what you saw in the PR description
@@ -68,7 +68,7 @@ Never commit `.env.local` or any key.
 
 How to add or fix a quest, step by step, is in [data/README.md](data/README.md). CI validates every change, and merged data is copied into the database automatically.
 
-Reports submitted through the site (from Milestone 5) will be turned into data pull requests automatically. A data keeper reviews each one alongside the original report before merging.
+Reports submitted through the site wait in a review queue. A data keeper turns them into a data pull request with `pnpm reports apply` and reviews each one before merging (see [data/README.md](data/README.md#reports-from-the-site)).
 
 ## Using AI tools
 

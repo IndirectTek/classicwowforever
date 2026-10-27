@@ -39,6 +39,18 @@ A longtime Ruby on Rails engineer learning Next.js, React, and Python. When you 
 - Model and effort live in `lib/config.ts` (Haiku 5.5, effort `medium`, chosen by the evals). Prices for the cost column are in `lib/pricing.ts`.
 - `finalizePlan()` enforces what code can check: candidate-only quest ids, a known logout spot, about 10% time slack, length limits. Change prompt rules in `lib/prompts/plan-system.md` and keep its example plan valid (`lib/prompt.test.ts`).
 
+## Group sessions
+
+- `POST /api/plans` with `party` (up to 4 others: class, level, preferred role) makes a group plan. `lib/planner/group.ts` decides roles (`assignRoles`) and the dungeon (`pickDungeon`: level fit, time, travel) in code; the model only plans the evening around them. The result is stored as `plan.group` (`GroupInfo` in `lib/schema.ts`), with classes and levels but never other players' names.
+- Dungeons are `kind: "dungeon"` entries in `data/zones/*.json`. The five low-level ones are drafts (`draft-2026-10-28`) until a keeper confirms them.
+- The group scenarios in `evals/scenarios.yaml` use the same `group` context shape as `buildPlanContext()` (see `lib/planner/context.test.ts`).
+
+## Reports and the home prompt
+
+- `/report` saves to `quest_reports` with the user's session client (RLS: own rows, status `new` only). The `limit_quest_reports` trigger caps 40 a day. Limits in `lib/reports.ts` match `QuestEntry`, so accepted reports always fit in `data/`.
+- Keepers use `pnpm reports` (`scripts/reports.mts`; conversion in `lib/data/fromReports.ts`). Reports never reach the planner without a reviewed data PR.
+- The home prompt posts to `/plan?q=`; `lib/sessionPrompt.ts` parses it with patterns (no model call). Add phrasings there with a test.
+
 ## Evals
 
 - `evals/run_evals.py` uses the app's prompt and `lib/prompts/plan-output.schema.json`. After changing `ModelPlan`, run `pnpm schema:export`.

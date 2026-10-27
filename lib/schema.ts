@@ -39,6 +39,20 @@ export const ModelPlan = z.object({
 });
 export type ModelPlan = z.infer<typeof ModelPlan>;
 
+export const roles = ["tank", "healer", "dps"] as const;
+export type Role = (typeof roles)[number];
+
+// What a group plan stores and shows next to the steps.
+export const GroupInfo = z.object({
+  members: z.array(z.object({ class: z.string(), level: z.number(), role: z.enum(roles) })),
+  missing: z.array(z.enum(roles)),
+  openSlots: z.number().int().min(0),
+  dungeon: z.object({ id: z.string(), name: z.string() }).nullable(),
+  // Why there's no dungeon, when the goal was a dungeon.
+  noDungeonReason: z.enum(["no-dungeons", "levels", "time"]).nullable(),
+});
+export type GroupInfo = z.infer<typeof GroupInfo>;
+
 // What we save in session_plans.plan and render: the model's plan after
 // validation, with ids resolved to names. Unknown ids are dropped, and an
 // unknown logout spot becomes { id: null, name: <nearest known spot> }.
@@ -55,6 +69,8 @@ export const StoredPlan = z.object({
     .min(1),
   logoutSpot: z.object({ id: z.string().nullable(), name: z.string() }),
   why: z.string(),
+  // Group sessions only (see lib/planner/group.ts).
+  group: GroupInfo.optional(),
 });
 export type StoredPlan = z.infer<typeof StoredPlan>;
 

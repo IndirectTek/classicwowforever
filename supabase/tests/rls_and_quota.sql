@@ -121,4 +121,71 @@ set role authenticated;
 select set_config('request.jwt.claim.sub', '11111111-1111-1111-1111-111111111111', false);
 do $$ begin assert (select count(*) from public.session_plans) = 0, 'A must not see B''s plans'; end $$;
 reset role;
+-- Quest reports: users add, read and withdraw only their own new reports.
+set role authenticated;
+select set_config('request.jwt.claim.sub', '11111111-1111-1111-1111-111111111111', false);
+do $$
+declare i int;
+begin
+  insert into public.quest_reports (profile_id, kind, game, name, zone_id, min_level, max_level, faction, seen_on)
+    values (auth.uid(), 'new', 'classic-era', 'A Report', 'elwynn-forest', 2, 5, 'alliance', current_date);
+  begin
+    insert into public.quest_reports (profile_id, status, kind, game, name, zone_id, min_level, max_level, faction, seen_on)
+      values (auth.uid(), 'applied', 'new', 'forever', 'Self Approved', 'elwynn-forest', 2, 5, 'alliance', current_date);
+    raise exception 'FAIL: user approved own report';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    insert into public.quest_reports (profile_id, kind, game, name, zone_id, min_level, max_level, faction, seen_on)
+      values ('22222222-2222-2222-2222-222222222222', 'new', 'forever', 'Not Mine', 'elwynn-forest', 2, 5, 'alliance', current_date);
+    raise exception 'FAIL: reported as another user';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    update public.quest_reports set status = 'applied';
+    raise exception 'FAIL: user changed a report status';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    insert into public.quest_reports (profile_id, kind, game, name, zone_id, min_level, max_level, faction, seen_on)
+      values (auth.uid(), 'new', 'forever', 'From The Future', 'elwynn-forest', 2, 5, 'alliance', current_date + 7);
+    raise exception 'FAIL: report dated in the future';
+  exception when raise_exception then
+    if sqlerrm <> 'seen_on_in_future' then raise; end if;
+  end;
+  -- 40 a day, then refused.
+  for i in 2..40 loop
+    insert into public.quest_reports (profile_id, kind, game, name, zone_id, min_level, max_level, faction, seen_on)
+      values (auth.uid(), 'new', 'classic-era', 'Report ' || i, 'elwynn-forest', 2, 5, 'alliance', current_date);
+  end loop;
+  begin
+    insert into public.quest_reports (profile_id, kind, game, name, zone_id, min_level, max_level, faction, seen_on)
+      values (auth.uid(), 'new', 'classic-era', 'One Too Many', 'elwynn-forest', 2, 5, 'alliance', current_date);
+    raise exception 'FAIL: report limit not enforced';
+  exception when raise_exception then
+    if sqlerrm <> 'report_limit' then raise; end if;
+  end;
+  delete from public.quest_reports where name = 'Report 40';
+  assert (select count(*) from public.quest_reports) = 39, 'user withdraws own new report';
+end $$;
+reset role;
+
+set role service_role;
+update public.quest_reports set status = 'applied' where name = 'A Report';
+reset role;
+
+set role authenticated;
+select set_config('request.jwt.claim.sub', '11111111-1111-1111-1111-111111111111', false);
+do $$ begin
+  delete from public.quest_reports where name = 'A Report';
+  assert (select count(*) from public.quest_reports where name = 'A Report') = 1, 'reviewed reports stay';
+end $$;
+select set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222', false);
+do $$ begin assert (select count(*) from public.quest_reports) = 0, 'B must not see A''s reports'; end $$;
+reset role;
+
+set role anon;
+select set_config('request.jwt.claim.sub', '', false);
+do $$ begin assert (select count(*) from public.quest_reports) = 0, 'anon must not read reports'; end $$;
+reset role;
 \echo ALL DATABASE TESTS PASSED
