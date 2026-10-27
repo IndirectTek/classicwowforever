@@ -91,6 +91,17 @@ At Haiku 5.5's list price ($0.10 per million input tokens, $0.50 per million out
 - `supabase/seed.sql` is now generated from `data/` (`pnpm data:generate`).
 - **Moving out later:** when outside data contributors arrive, `data/` can move to the planned `classicwowforever_data` repo, with the same files, checks and sync.
 
+## Blizzard's developer API is not a data source (checked October 27, 2026)
+
+Blizzard's Developer API Terms of Use (last updated October 1, 2019) conflict with this project:
+
+- **No paid features:** "'Premium' versions of Applications offering additional for-pay features are not permitted." That conflicts with the Supporter tier.
+- **30-day limit:** a maximum 30-day lifetime on all API data, so it can't feed a knowledge base we keep.
+- **No redistribution:** no selling, licensing or transferring of the data, "including anonymous, aggregate or derived data", so it can't go into the CC BY-SA `data/` files.
+- **No Forever data yet:** as of October 26 there was no WoW Forever namespace; a third-party check got 403 for every guess.
+
+So gear, enchant and drop-source knowledge comes from the exporter addon and our own play instead; see `docs/addon-sync.md`. If we ever use the API at all, it would be for temporary, attributed lookups in free features, and only after asking legal@blizzard.com.
+
 ## New features
 
 - **Rested XP calculator** at `/rested`. No AI and no login. It uses classic-era rates, defined as constants in `lib/rested.ts`; confirm them in WoW Forever.
