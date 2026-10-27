@@ -16,7 +16,8 @@ A longtime Ruby on Rails engineer learning Next.js, React, and Python. When you 
 - Zod validates all input and all model output.
 - `lib/supabase/admin.ts` uses the secret key and bypasses RLS. Use it only for tables with no user owner (like `waitlist`). User-owned data goes through the user's own session client so RLS applies.
 - Never commit secrets. Never add Blizzard art, logos, screenshots, or game fonts.
-- Game data comes from the developer's own play and official patch notes. Never scrape fan wikis or databases.
+- Game data comes from the team's own play and official patch notes. Never scrape fan wikis or databases, and never invent quests in `data/`.
+- `data/zones/*.json` is the source of truth for zones, inns and quests (format in `lib/data/schema.ts`). After editing data or that schema, run `pnpm data:generate` (rewrites `supabase/seed.sql` and `data/zone.schema.json`). Don't edit `seed.sql` by hand.
 
 ## Commands
 

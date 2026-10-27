@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "ironforge",
+  "name": "Ironforge",
+  "levels": [1, 60],
+  "faction": "alliance",
+  "kind": "city",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["dun-morogh"],
+  "restSpots": [
+    {
+      "id": "ironforge",
+      "name": "Ironforge",
+      "kind": "city",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

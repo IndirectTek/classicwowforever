@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "darkshore",
+  "name": "Darkshore",
+  "levels": [10, 20],
+  "faction": "alliance",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["teldrassil"],
+  "restSpots": [
+    {
+      "id": "auberdine-inn",
+      "name": "The inn at Auberdine",
+      "kind": "inn",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

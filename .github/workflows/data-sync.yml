@@ -1,0 +1,43 @@
+# Copies merged game data (data/zones/*.json) into the production database.
+#
+# Needs two repository secrets (Settings > Secrets and variables > Actions):
+#   SUPABASE_URL         the production project URL (https://<ref>.supabase.co)
+#   SUPABASE_SECRET_KEY  the production secret key
+# Until both exist, this workflow skips the sync instead of failing.
+name: Sync game data
+
+on:
+  push:
+    branches: [main]
+    paths: ["data/**"]
+  workflow_dispatch:
+
+concurrency: data-sync
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+    steps:
+      - name: Skip when secrets aren't configured
+        if: env.SUPABASE_SECRET_KEY == ''
+        run: echo "::notice::Add SUPABASE_URL and SUPABASE_SECRET_KEY secrets to enable data sync."
+      - uses: actions/checkout@v4
+        if: env.SUPABASE_SECRET_KEY != ''
+      - uses: pnpm/action-setup@v4
+        if: env.SUPABASE_SECRET_KEY != ''
+      - uses: actions/setup-node@v4
+        if: env.SUPABASE_SECRET_KEY != ''
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        if: env.SUPABASE_SECRET_KEY != ''
+      # Dry run first so the log shows exactly what changes, then apply.
+      # --prune removes quests and rest spots deleted from the files; zones are never deleted.
+      - run: pnpm data:sync --prune
+        if: env.SUPABASE_SECRET_KEY != ''
+      - run: pnpm data:sync --prune --yes
+        if: env.SUPABASE_SECRET_KEY != ''

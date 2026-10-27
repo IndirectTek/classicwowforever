@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "the-barrens",
+  "name": "The Barrens",
+  "levels": [10, 25],
+  "faction": "horde",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["durotar", "mulgore"],
+  "restSpots": [
+    {
+      "id": "crossroads-inn",
+      "name": "The inn at the Crossroads",
+      "kind": "inn",
+      "faction": "horde",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

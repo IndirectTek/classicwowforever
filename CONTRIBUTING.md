@@ -66,7 +66,9 @@ Never commit `.env.local` or any key.
 - When you correct an existing record, explain what you saw in the PR description
 - Time estimates are for a typical player, not a speedrunner
 
-Reports submitted through the site are turned into data pull requests automatically. A data keeper reviews each one alongside the original report before merging.
+How to add or fix a quest, step by step, is in [data/README.md](data/README.md). CI validates every change, and merged data is copied into the database automatically.
+
+Reports submitted through the site (from Milestone 5) will be turned into data pull requests automatically. A data keeper reviews each one alongside the original report before merging.
 
 ## Using AI tools
 

@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "silverpine-forest",
+  "name": "Silverpine Forest",
+  "levels": [10, 20],
+  "faction": "horde",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["tirisfal-glades"],
+  "restSpots": [
+    {
+      "id": "sepulcher-inn",
+      "name": "The inn at the Sepulcher",
+      "kind": "inn",
+      "faction": "horde",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "mulgore",
+  "name": "Mulgore",
+  "levels": [1, 10],
+  "faction": "horde",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["the-barrens", "thunder-bluff"],
+  "restSpots": [
+    {
+      "id": "bloodhoof-inn",
+      "name": "The inn at Bloodhoof Village",
+      "kind": "inn",
+      "faction": "horde",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

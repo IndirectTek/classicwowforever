@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "duskwood",
+  "name": "Duskwood",
+  "levels": [18, 30],
+  "faction": "alliance",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["elwynn-forest", "redridge-mountains", "westfall"],
+  "restSpots": [
+    {
+      "id": "darkshire-inn",
+      "name": "Scarlet Raven Tavern, Darkshire",
+      "kind": "inn",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

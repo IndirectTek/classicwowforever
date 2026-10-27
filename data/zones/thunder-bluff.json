@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "thunder-bluff",
+  "name": "Thunder Bluff",
+  "levels": [1, 60],
+  "faction": "horde",
+  "kind": "city",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["mulgore"],
+  "restSpots": [
+    {
+      "id": "thunder-bluff",
+      "name": "Thunder Bluff",
+      "kind": "city",
+      "faction": "horde",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

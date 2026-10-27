@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "redridge-mountains",
+  "name": "Redridge Mountains",
+  "levels": [15, 25],
+  "faction": "alliance",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["duskwood", "elwynn-forest"],
+  "restSpots": [
+    {
+      "id": "lakeshire-inn",
+      "name": "Lakeshire Inn",
+      "kind": "inn",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

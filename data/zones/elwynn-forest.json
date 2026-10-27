@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "elwynn-forest",
+  "name": "Elwynn Forest",
+  "levels": [1, 10],
+  "faction": "alliance",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["duskwood", "redridge-mountains", "stormwind-city", "westfall"],
+  "restSpots": [
+    {
+      "id": "goldshire-inn",
+      "name": "Lion's Pride Inn, Goldshire",
+      "kind": "inn",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

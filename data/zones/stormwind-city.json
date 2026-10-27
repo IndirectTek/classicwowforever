@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "stormwind-city",
+  "name": "Stormwind City",
+  "levels": [1, 60],
+  "faction": "alliance",
+  "kind": "city",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["elwynn-forest"],
+  "restSpots": [
+    {
+      "id": "stormwind-city",
+      "name": "Stormwind City",
+      "kind": "city",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

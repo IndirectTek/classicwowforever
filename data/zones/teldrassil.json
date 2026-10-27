@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "teldrassil",
+  "name": "Teldrassil",
+  "levels": [1, 10],
+  "faction": "alliance",
+  "kind": "zone",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["darkshore", "darnassus"],
+  "restSpots": [
+    {
+      "id": "dolanaar-inn",
+      "name": "The inn at Dolanaar",
+      "kind": "inn",
+      "faction": "alliance",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}

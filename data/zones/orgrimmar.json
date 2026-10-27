@@ -1,0 +1,22 @@
+{
+  "$schema": "../zone.schema.json",
+  "id": "orgrimmar",
+  "name": "Orgrimmar",
+  "levels": [1, 60],
+  "faction": "horde",
+  "kind": "city",
+  "verified": false,
+  "source": "draft-2026-10-26",
+  "neighbors": ["durotar"],
+  "restSpots": [
+    {
+      "id": "orgrimmar",
+      "name": "Orgrimmar",
+      "kind": "city",
+      "faction": "horde",
+      "verified": false,
+      "source": "draft-2026-10-26"
+    }
+  ],
+  "quests": []
+}
