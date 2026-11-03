@@ -10,6 +10,9 @@ export function SiteFooter() {
           <Link href="/rested" className="hover:text-text">
             Rested XP
           </Link>
+          <Link href="/report" className="hover:text-text">
+            Report a quest
+          </Link>
           <Link href="/open-source" className="hover:text-text">
             Open Source
           </Link>

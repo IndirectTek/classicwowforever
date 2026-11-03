@@ -1,6 +1,7 @@
 // Builds the per-request JSON the model sees, in the shape described in
 // lib/prompts/plan-system.md. Pure, so the evals and tests can use it too.
 import type { Goal } from "@/lib/schema";
+import type { Dungeon, GroupInfo } from "./group";
 
 export type Candidate = {
   id: string;
@@ -22,6 +23,8 @@ export type PlanContextInput = {
   candidates: Candidate[];
   restSpots: RestSpot[];
   zoneNames: Map<string, string>;
+  // Set for group sessions; `character` is then the player who asked.
+  group?: { info: GroupInfo; dungeon: Dungeon | null };
 };
 
 export function buildPlanContext(input: PlanContextInput): string {
@@ -47,5 +50,25 @@ export function buildPlanContext(input: PlanContextInput): string {
       ...(c.notes ? { notes: c.notes } : {}),
     })),
     restSpots: input.restSpots.map((s) => ({ id: s.id, name: s.name, zone: zone(s.zone_id) })),
+    ...(input.group ? { group: groupContext(input.group, zone) } : {}),
   });
+}
+
+function groupContext(
+  { info, dungeon }: NonNullable<PlanContextInput["group"]>,
+  zone: (id: string | null) => string,
+) {
+  return {
+    members: info.members,
+    ...(info.missing.length ? { missing: info.missing } : {}),
+    ...(info.openSlots ? { openSlots: info.openSlots } : {}),
+    dungeon: dungeon
+      ? {
+          id: dungeon.id,
+          name: dungeon.name,
+          zone: zone(dungeon.zone_id),
+          estMinutes: dungeon.est_minutes ?? 60,
+        }
+      : null,
+  };
 }

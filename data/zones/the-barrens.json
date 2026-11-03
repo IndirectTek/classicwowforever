@@ -18,5 +18,17 @@
       "source": "draft-2026-10-26"
     }
   ],
-  "quests": []
+  "quests": [
+    {
+      "id": "the-barrens-wailing-caverns",
+      "name": "Wailing Caverns",
+      "levels": [17, 24],
+      "faction": "both",
+      "kind": "dungeon",
+      "estMinutes": 60,
+      "notes": "Entrance in a cave in the hills southwest of the Crossroads.",
+      "verified": false,
+      "source": "draft-2026-10-28"
+    }
+  ]
 }

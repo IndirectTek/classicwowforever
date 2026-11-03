@@ -20,6 +20,7 @@
     "data:generate": "UPDATE_DATA=1 vitest run lib/data/generated.test.ts",
     "data:check": "tsx scripts/data.mts check",
     "data:sync": "tsx scripts/data.mts sync",
+    "reports": "tsx scripts/reports.mts",
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {

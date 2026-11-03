@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { PlanCard, planTitle } from "@/components/planner/PlanCard";
 import { buttonClasses } from "@/components/ui/Button";
 import { EXAMPLE_SHARE_ID } from "@/lib/examplePlan";
@@ -27,13 +28,25 @@ export async function generateMetadata({ params }: PageProps<"/p/[shareId]">): P
   };
 }
 
-export default async function SharedPlanPage({ params }: PageProps<"/p/[shareId]">) {
+// The URL is read inside Suspense, so a navigation here shows the page
+// shell at once (Cache Components' instant navigation).
+export default function SharedPlanPage({ params }: PageProps<"/p/[shareId]">) {
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-10 sm:py-14">
+      <Suspense fallback={<div className="h-[32rem] animate-pulse rounded-lg bg-surface" />}>
+        <SharedPlan params={params} />
+      </Suspense>
+    </div>
+  );
+}
+
+async function SharedPlan({ params }: Pick<PageProps<"/p/[shareId]">, "params">) {
   const { shareId } = await params;
   const view = await getPlanView(shareId);
   if (!view) notFound();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:py-14">
+    <>
       {shareId === EXAMPLE_SHARE_ID && (
         <p className="mb-4 text-sm text-text-muted">
           This is an example plan. Try the timer and check off steps; your progress stays in this
@@ -47,6 +60,6 @@ export default async function SharedPlanPage({ params }: PageProps<"/p/[shareId]
         </Link>
         <p className="text-sm text-text-muted">Free: 3 plans a week.</p>
       </div>
-    </div>
+    </>
   );
 }

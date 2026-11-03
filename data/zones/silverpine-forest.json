@@ -18,5 +18,17 @@
       "source": "draft-2026-10-26"
     }
   ],
-  "quests": []
+  "quests": [
+    {
+      "id": "silverpine-forest-shadowfang-keep",
+      "name": "Shadowfang Keep",
+      "levels": [22, 30],
+      "faction": "both",
+      "kind": "dungeon",
+      "estMinutes": 50,
+      "notes": "The keep above Pyrewood Village, in southern Silverpine.",
+      "verified": false,
+      "source": "draft-2026-10-28"
+    }
+  ]
 }

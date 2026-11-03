@@ -58,6 +58,8 @@ export async function saveCharacter(
   }
 
   revalidatePath("/characters", "layout");
+  // The planner lists characters too (and may have sent you here to add one).
+  revalidatePath("/plan");
   return { status: "saved" };
 }
 

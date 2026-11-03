@@ -6,6 +6,11 @@
 #   no_quests: true        the plan must not name any quest
 #   forbid_ids: [...]      these candidate ids must not be used
 #   must_not_mention: [...] text that must not appear anywhere in the plan
+#   require_ids: [...]     these candidate ids must be used (the group's dungeon)
+#   must_mention: [...]    text that must appear somewhere in the plan
+#
+# Group scenarios carry `group` exactly as lib/planner/group.ts computes it:
+# roles and the dungeon are decided in code before the model sees them.
 
 - id: elwynn-xp-60
   about: A typical evening with plenty of nearby quests
@@ -317,3 +322,97 @@
       - { id: lakeshire-inn, name: Lakeshire Inn, zone: Redridge Mountains }
       - { id: darkshire-inn, name: "Scarlet Raven Tavern, Darkshire", zone: Duskwood }
       - { id: stormwind-city, name: Stormwind City, zone: Stormwind City }
+
+- id: group-dungeon-120
+  about: A full group with a tank and healer, and a dungeon that fits
+  context:
+    character: { class: paladin, race: human, level: 20, faction: alliance, zone: Westfall }
+    minutes: 120
+    goal: dungeon
+    candidates:
+      - {
+          id: d-w1,
+          name: The Flooded Deeps,
+          zone: Westfall,
+          levels: [18, 23],
+          kind: dungeon,
+          estMinutes: 60,
+        }
+      - {
+          id: q-w1,
+          name: Deeps Recon,
+          zone: Westfall,
+          levels: [18, 21],
+          estMinutes: 10,
+          notes: "Completed inside The Flooded Deeps",
+        }
+      - { id: q-w2, name: Scarecrow Season, zone: Westfall, levels: [17, 20], estMinutes: 20 }
+    restSpots:
+      - { id: stormwind-city, name: Stormwind City, zone: Stormwind City }
+      - { id: lakeshire-inn, name: Lakeshire Inn, zone: Redridge Mountains }
+    group:
+      members:
+        - { class: paladin, level: 20, role: healer }
+        - { class: warrior, level: 21, role: tank }
+        - { class: mage, level: 19, role: dps }
+        - { class: rogue, level: 20, role: dps }
+        - { class: hunter, level: 22, role: dps }
+      dungeon: { id: d-w1, name: The Flooded Deeps, zone: Westfall, estMinutes: 60 }
+  expect: { require_ids: [d-w1], must_mention: [warrior] }
+
+- id: group-missing-healer-120
+  about: Three players with no healer; the plan should start by finding one
+  context:
+    character: { class: warrior, race: orc, level: 19, faction: horde, zone: The Barrens }
+    minutes: 120
+    goal: dungeon
+    candidates:
+      - {
+          id: d-b1,
+          name: The Howling Hollows,
+          zone: The Barrens,
+          levels: [17, 24],
+          kind: dungeon,
+          estMinutes: 60,
+        }
+      - { id: q-b1, name: Raptor Hunt, zone: The Barrens, levels: [17, 20], estMinutes: 20 }
+    restSpots:
+      - { id: crossroads-inn, name: The inn at the Crossroads, zone: The Barrens }
+      - { id: orgrimmar, name: Orgrimmar, zone: Orgrimmar }
+    group:
+      members:
+        - { class: warrior, level: 19, role: tank }
+        - { class: rogue, level: 20, role: dps }
+        - { class: mage, level: 18, role: dps }
+      missing: [healer]
+      openSlots: 2
+      dungeon: { id: d-b1, name: The Howling Hollows, zone: The Barrens, estMinutes: 60 }
+  expect: { require_ids: [d-b1], must_mention: [healer] }
+
+- id: group-duo-quests-60
+  about: A duo questing together; no dungeon was chosen, so none should appear
+  context:
+    character: { class: hunter, race: dwarf, level: 12, faction: alliance, zone: Loch Modan }
+    minutes: 60
+    goal: xp
+    candidates:
+      - { id: q-l1, name: Bears of the Loch, zone: Loch Modan, levels: [11, 13], estMinutes: 15 }
+      - { id: q-l2, name: Trogg Trouble, zone: Loch Modan, levels: [11, 14], estMinutes: 20 }
+      - { id: q-l3, name: Dam Inspection, zone: Loch Modan, levels: [12, 14], estMinutes: 10 }
+      - {
+          id: d-x1,
+          name: The Sunken Vault,
+          zone: Loch Modan,
+          levels: [14, 19],
+          kind: dungeon,
+          estMinutes: 45,
+        }
+    restSpots:
+      - { id: thelsamar-inn, name: "Stoutlager Inn, Thelsamar", zone: Loch Modan }
+      - { id: ironforge, name: Ironforge, zone: Ironforge }
+    group:
+      members:
+        - { class: hunter, level: 12, role: dps }
+        - { class: mage, level: 11, role: dps }
+      dungeon: null
+  expect: { forbid_ids: [d-x1] }

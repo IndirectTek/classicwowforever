@@ -23,3 +23,7 @@ export function timeLeft(now: number, target: number = LAUNCH_AT.getTime()): Tim
     seconds: totalSeconds % 60,
   };
 }
+
+export function hasLaunched(now: number = Date.now()): boolean {
+  return now >= LAUNCH_AT.getTime();
+}

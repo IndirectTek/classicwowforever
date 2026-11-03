@@ -1,14 +1,16 @@
 // Home page: a Server Component by default (rendered on the server like an ERB
-// view). Only the countdown and the waitlist form ship JavaScript.
+// view). Only the prompt, the countdown and the waitlist form ship JavaScript.
 import Link from "next/link";
 import { Countdown } from "@/components/countdown/Countdown";
+import { SessionPrompt } from "@/components/home/SessionPrompt";
 import { WaitlistForm } from "@/components/waitlist/WaitlistForm";
 import { site } from "@/lib/site";
+import { getZones } from "@/lib/zones";
 
 const steps = [
   {
     title: "Tell us your time",
-    body: "Pick your character, how many minutes you have tonight, and what you're after: XP, gold, gear, a dungeon, or a relaxed evening.",
+    body: "One line is enough: your character, how many minutes you have tonight, and what you're after: XP, gold, gear, a dungeon, or a relaxed evening.",
   },
   {
     title: "Get a plan",
@@ -31,9 +33,17 @@ const tools = [
     title: "Rested XP calculator",
     body: "Logging out now? See how much rested XP you'll have tomorrow, or in three days.",
   },
+  {
+    href: "/report",
+    title: "Report a quest",
+    body: "Playing Classic Era until launch? Tell us about the quests you play. We'll check them in WoW Forever and credit you in our open data.",
+  },
 ];
 
-export default function Home() {
+export default async function Home() {
+  // Cached (see lib/zones.ts), so the page still prerenders.
+  const zones = await getZones();
+
   return (
     <>
       <section className="mx-auto max-w-[1120px] px-4 pb-16 pt-12 sm:pt-20">
@@ -47,6 +57,10 @@ export default function Home() {
           You have 75 minutes, not all night. Tell us your character and your time, and get a plan
           that fits, ending somewhere you&apos;ll log out rested.
         </p>
+
+        <div className="mt-8">
+          <SessionPrompt zones={zones.map(({ id, name }) => ({ id, name }))} />
+        </div>
 
         <div className="mt-10">
           <Countdown />
@@ -76,7 +90,7 @@ export default function Home() {
         <h2 id="while-you-wait" className="font-display mb-6 text-3xl font-bold">
           While you wait
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((tool) => (
             <Link
               key={tool.href}

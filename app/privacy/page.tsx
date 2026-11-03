@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   title: "Privacy",
 };
 
-// Plain-language privacy notice. Revisit when plans, the addon import, and
-// payments arrive.
+// Plain-language privacy notice. Revisit when the addon import and payments
+// arrive.
 export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
@@ -21,6 +21,12 @@ export default function PrivacyPage() {
           <strong className="text-text">Your account.</strong> Signing in stores your email address
           so we can send sign-in links. Characters you add (name, realm, race, class, level, zone)
           are visible only to you. Delete a character and everything tied to it is deleted with it.
+        </p>
+        <p>
+          <strong className="text-text">Quest reports.</strong> When you report a quest we store it
+          with your account, so you can see and withdraw it. If a data keeper adds it to our open
+          game data, the quest details and the name you chose to be credited as (or
+          &ldquo;community&rdquo;) become public under CC BY-SA. Your email address never does.
         </p>
         <p>
           <strong className="text-text">Cookies.</strong> Signing in sets a cookie that keeps you

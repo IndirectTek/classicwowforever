@@ -1,4 +1,5 @@
 import { goalLabels, type PlanView } from "@/lib/schema";
+import { GroupPanel } from "./GroupPanel";
 import { PlanSession } from "./PlanSession";
 import { ShareButton } from "./ShareButton";
 
@@ -17,6 +18,7 @@ export function PlanCard({ view }: { view: PlanView }) {
         <div>
           <p className="text-sm text-text-muted">
             {view.characterName} · Level {view.characterLevel} {capitalize(view.characterClass)}
+            {plan.group && ` and ${plan.group.members.length - 1} more`}
           </p>
           <h1 className="font-display mt-1 text-3xl font-bold">
             {view.minutes} minutes · {goalLabels[view.goal]}
@@ -25,6 +27,8 @@ export function PlanCard({ view }: { view: PlanView }) {
         </div>
         <ShareButton path={`/p/${view.shareId}`} title={planTitle(view)} />
       </header>
+
+      {plan.group && <GroupPanel group={plan.group} leaderName={view.characterName} />}
 
       <PlanSession shareId={view.shareId} plan={plan} minutes={view.minutes} />
 
