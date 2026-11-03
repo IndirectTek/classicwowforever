@@ -1,3 +1,5 @@
+import { GameIcon } from "@/components/icons/GameIcon";
+import { classIcon, roleIcons } from "@/components/icons/meanings";
 import { label } from "@/lib/game";
 import { noDungeonText, roleLabels } from "@/lib/planner/group";
 import type { GroupInfo } from "@/lib/schema";
@@ -18,6 +20,9 @@ export function GroupPanel({ group, leaderName }: { group: GroupInfo; leaderName
     <section aria-label="Group" className="mb-6 rounded-lg bg-surface-raised p-4">
       <p className="text-sm text-text-muted">
         {group.dungeon ? (
+          <GameIcon name="dungeon-gate" className="mr-1.5 inline size-4 align-[-3px] text-accent" />
+        ) : null}
+        {group.dungeon ? (
           <>
             Dungeon: <span className="font-medium text-text">{group.dungeon.name}</span>
           </>
@@ -29,7 +34,13 @@ export function GroupPanel({ group, leaderName }: { group: GroupInfo; leaderName
       </p>
       <ul className="mt-2 flex flex-wrap gap-2">
         {group.members.map((m, i) => (
-          <li key={i} className="rounded-full border border-border px-3 py-1 text-sm">
+          <li
+            key={i}
+            className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm"
+          >
+            {classIcon(m.class) && (
+              <GameIcon name={classIcon(m.class)!} className="size-4 text-text-muted" />
+            )}
             {i === 0 ? leaderName : `${label(m.class)} ${m.level}`}
             {i === 0 && (
               <span className="text-text-muted">
@@ -37,7 +48,10 @@ export function GroupPanel({ group, leaderName }: { group: GroupInfo; leaderName
                 ({label(m.class)} {m.level})
               </span>
             )}
-            <span className="text-accent"> · {roleLabels[m.role]}</span>
+            <span className="inline-flex items-center gap-1 text-accent">
+              <GameIcon name={roleIcons[m.role]} className="size-4" />
+              {roleLabels[m.role]}
+            </span>
           </li>
         ))}
       </ul>

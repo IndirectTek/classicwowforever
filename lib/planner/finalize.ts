@@ -6,13 +6,14 @@ import type { Candidate, RestSpot } from "./context";
 
 type Context = {
   minutes: number;
-  candidates: Pick<Candidate, "id" | "name">[];
+  candidates: (Pick<Candidate, "id" | "name"> & Partial<Pick<Candidate, "kind">>)[];
   restSpots: Pick<RestSpot, "id" | "name" | "zone_id">[];
   characterZoneId: string | null;
 };
 
 export function finalizePlan(model: ModelPlan, ctx: Context): StoredPlan {
   const questNames = new Map(ctx.candidates.map((c) => [c.id, c.name]));
+  const dungeonIds = new Set(ctx.candidates.filter((c) => c.kind === "dungeon").map((c) => c.id));
 
   const steps = model.steps.slice(0, LIMITS.steps).map((step) => ({
     action: trim(step.action, LIMITS.action),
@@ -20,7 +21,11 @@ export function finalizePlan(model: ModelPlan, ctx: Context): StoredPlan {
     // Drop ids that weren't offered (the model invented or misspelled them).
     quests: [...new Set(step.questIds)]
       .filter((id) => questNames.has(id))
-      .map((id) => ({ id, name: questNames.get(id)! })),
+      .map((id) => ({
+        id,
+        name: questNames.get(id)!,
+        ...(dungeonIds.has(id) ? { kind: "dungeon" as const } : {}),
+      })),
   }));
 
   return {

@@ -4,8 +4,10 @@
 // screen readers and form posts all work for free (like a Rails
 // collection_radio_buttons styled as pills).
 import { useId } from "react";
+import { GameIcon } from "@/components/icons/GameIcon";
+import type { GameIconName } from "@/components/icons/gameIcons";
 
-type Option<T extends string | number> = { value: T; label: string };
+type Option<T extends string | number> = { value: T; label: string; icon?: GameIconName };
 
 type Props<T extends string | number> = {
   legend: string;
@@ -39,7 +41,8 @@ export function ChipGroup<T extends string | number>({
               onChange={() => onChange(option.value)}
               className="peer sr-only"
             />
-            <span className="inline-flex h-11 items-center rounded-full border border-border px-4 text-sm text-text transition-colors hover:bg-surface-raised peer-checked:border-accent peer-checked:bg-accent peer-checked:text-accent-text peer-checked:hover:bg-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent sm:h-9">
+            <span className="inline-flex h-11 items-center gap-1.5 rounded-full border border-border px-4 text-sm text-text transition-colors hover:bg-surface-raised peer-checked:border-accent peer-checked:bg-accent peer-checked:text-accent-text peer-checked:hover:bg-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent sm:h-9">
+              {option.icon && <GameIcon name={option.icon} className="size-4" />}
               {option.label}
             </span>
           </label>

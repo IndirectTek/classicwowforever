@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ClassBadge } from "@/components/icons/ClassBadge";
 import { rulesetText, type Character } from "@/lib/characters";
 import { label } from "@/lib/game";
 
@@ -14,8 +15,11 @@ export function CharacterCard({
       href={`/characters/${character.id}`}
       className="group flex min-h-40 flex-col rounded-lg border border-border bg-surface p-6 hover:border-accent focus-visible:outline-2 focus-visible:outline-accent"
     >
-      <div className="flex items-baseline justify-between gap-2">
-        <h2 className="text-xl font-semibold group-hover:text-accent">{character.name}</h2>
+      <div className="flex items-center gap-3">
+        <ClassBadge characterClass={character.class} />
+        <h2 className="min-w-0 flex-1 truncate text-xl font-semibold group-hover:text-accent">
+          {character.name}
+        </h2>
         <span className="font-mono text-sm text-text-muted">Lv {character.level}</span>
       </div>
       <p className="mt-1 text-text-muted">

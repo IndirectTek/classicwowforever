@@ -21,6 +21,8 @@ import {
 } from "@/lib/schema";
 import { examplePlan } from "@/lib/examplePlan";
 import { PlanCard } from "./PlanCard";
+import { GameIcon } from "@/components/icons/GameIcon";
+import { goalIcons } from "@/components/icons/meanings";
 import { PartyEditor } from "./PartyEditor";
 import { PlanFeedback } from "./PlanFeedback";
 import { QuotaPill } from "./QuotaPill";
@@ -138,8 +140,8 @@ export function PlannerForm({
           <ChipGroup
             legend="Who's playing"
             options={[
-              { value: "solo", label: "Just me" },
-              { value: "group", label: "With a group" },
+              { value: "solo", label: "Just me", icon: "hood" },
+              { value: "group", label: "With a group", icon: "crossed-swords" },
             ]}
             value={withGroup ? "group" : "solo"}
             onChange={(v) => {
@@ -189,7 +191,7 @@ export function PlannerForm({
 
         <ChipGroup
           legend="Goal"
-          options={goals.map((g) => ({ value: g, label: goalLabels[g] }))}
+          options={goals.map((g) => ({ value: g, label: goalLabels[g], icon: goalIcons[g] }))}
           value={goal}
           onChange={setGoal}
         />
@@ -256,6 +258,7 @@ function EmptyState() {
   const sample = examplePlan.plan;
   return (
     <div className="rounded-lg border border-dashed border-border p-6">
+      <GameIcon name="scroll-unfurled" className="mb-3 size-10 text-accent" />
       <p className="font-medium">Your plan shows up here.</p>
       <p className="mt-2 text-text-muted">
         A short checklist with a time budget for each step, ending where you&apos;ll log out rested.

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { withdrawReport } from "@/app/actions/reports";
 import { formatDate } from "@/components/characters/CharacterCard";
+import { GameIcon } from "@/components/icons/GameIcon";
 import { QuestReportForm, type ReportDefaults } from "@/components/reports/QuestReportForm";
 import { requireUser } from "@/lib/auth";
 import { hasLaunched } from "@/lib/launch";
@@ -21,7 +22,10 @@ export const metadata: Metadata = {
 export default function ReportPage({ searchParams }: PageProps<"/report">) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
-      <h1 className="font-display text-4xl font-bold">Report a quest</h1>
+      <div className="flex items-center gap-4">
+        <GameIcon name="quill-ink" className="size-10 text-accent" />
+        <h1 className="font-display text-4xl font-bold">Report a quest</h1>
+      </div>
       <p className="mt-3 text-text-muted">
         Played a quest? Tell us about it. A data keeper checks every report before the planner uses
         it, and you&apos;re credited in our{" "}
@@ -120,9 +124,10 @@ async function ReportBody({ searchParams }: Pick<PageProps<"/report">, "searchPa
             ))}
           </ul>
         ) : (
-          <p className="mt-4 rounded-lg border border-dashed border-border p-6 text-text-muted">
-            Nothing yet. Your reports and their review status show up here.
-          </p>
+          <div className="mt-4 flex items-center gap-4 rounded-lg border border-dashed border-border p-6 text-text-muted">
+            <GameIcon name="scroll-unfurled" className="size-8 text-accent" />
+            <p>Nothing yet. Your reports and their review status show up here.</p>
+          </div>
         )}
       </section>
     </>

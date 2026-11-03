@@ -124,6 +124,13 @@ So gear, enchant and drop-source knowledge comes from the exporter addon and our
 - **Two-part names.** Blizzard's name announcement says every Forever character has a first and a last name, unique as a pair within a region. The form asks for both (each 2 to 12 letters; the last name is optional until the player picks one) and stores them together in `characters.name` as "First Last", so everything that shows a name keeps working.
 - **Rulesets, not realms.** Forever is realmless, so there's no realm list to offer. The free-text realm became a `ruleset` choice: Normal, PvP or Role-Play, the ones Blizzard has named. Add Hardcore in `lib/game.ts` when it opens. The old `realm` column stays until a later migration drops it; cards still show an old realm if no ruleset is set.
 
+## Icons and a bit of Azeroth (November 2, 2026)
+
+- **Icons from game-icons.net (CC BY 3.0),** not from the game. A downloaded "WoW classic icon pack" turned out to be the game's own icons and model renders, which is Blizzard art, so it isn't used anywhere.
+- `pnpm icons` copies only the icons the site uses (24, about 32 KB) from `@iconify-json/game-icons` into `components/icons/gameIcons.ts`, with each icon's artist; `/open-source` lists the credits from that file.
+- Icons mark roles, goals, classes (generic fantasy icons, never the game's class icons), plan steps (quest, dungeon, logout), the home page and Report a quest. Section dividers and a faint campfire behind the home page headline add some atmosphere.
+- Plans now record which steps are dungeons (`kind: "dungeon"` on a stored quest), so a dungeon run gets its own icon. Older plans simply don't have it.
+
 ## New features
 
 - **Rested XP calculator** at `/rested`. No AI and no login. It uses classic-era rates, defined as constants in `lib/rested.ts`; confirm them in WoW Forever.

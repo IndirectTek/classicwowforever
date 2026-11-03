@@ -3,6 +3,8 @@
 // The rest of the group for a group session: class, level and a preferred
 // role for each player. The roles shown underneath come from the same
 // assignRoles() the server uses, so what you see is what the plan gets.
+import { GameIcon } from "@/components/icons/GameIcon";
+import { classIcons, roleIcons } from "@/components/icons/meanings";
 import { classesFor, label, racesFor, type CharacterClass, type Faction } from "@/lib/game";
 import {
   assignRoles,
@@ -106,12 +108,16 @@ export function PartyEditor({ leader, party, onChange }: Props) {
         <p className="text-text-muted">Roles</p>
         <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
           {members.map((m, i) => (
-            <li key={i}>
-              {i === 0 ? leader.name : `Player ${i + 1}`}{" "}
+            <li key={i} className="flex items-center gap-1.5">
+              <GameIcon name={classIcons[m.class]} className="size-4 text-text-muted" />
+              {i === 0 ? leader.name : `Player ${i + 1}`}
               <span className="text-text-muted">
                 ({label(m.class)} {m.level})
               </span>
-              : <span className="text-accent">{roleLabels[assigned[i]]}</span>
+              <span className="inline-flex items-center gap-1 text-accent">
+                <GameIcon name={roleIcons[assigned[i]]} className="size-4" />
+                {roleLabels[assigned[i]]}
+              </span>
             </li>
           ))}
         </ul>

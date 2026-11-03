@@ -18,6 +18,8 @@ import {
   timerStatus,
   type TimerState,
 } from "@/lib/timer";
+import { GameIcon } from "@/components/icons/GameIcon";
+import type { GameIconName } from "@/components/icons/gameIcons";
 import { Button } from "@/components/ui/Button";
 import { QuestStep } from "./QuestStep";
 import { TimeBudgetBar } from "./TimeBudgetBar";
@@ -153,6 +155,7 @@ export function PlanSession({ shareId, plan, minutes }: Props) {
             done={done[i] ?? false}
             current={active && i === currentStep}
             onToggle={() => toggleStep(i)}
+            icon={stepIcon(step, i === plan.steps.length - 1, plan.group?.dungeon?.id)}
             status={
               i === currentStep && stepLeft !== null
                 ? stepLeft >= 0
@@ -165,7 +168,7 @@ export function PlanSession({ shareId, plan, minutes }: Props) {
       </ol>
 
       <div className="flex items-start gap-3 rounded-lg border border-border bg-surface p-4">
-        <InnIcon />
+        <GameIcon name="beer-stein" className="mt-0.5 size-6 text-accent" />
         <div>
           <p className="font-medium">Log out at {spot}</p>
           <p className="text-sm text-text-muted">
@@ -212,21 +215,15 @@ function useWakeLock(enabled: boolean) {
   }, [enabled]);
 }
 
-function InnIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="mt-0.5 size-6 shrink-0 text-accent"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M3 11 12 4l9 7" />
-      <path d="M5 10v10h14V10" />
-      <path d="M10 20v-5h4v5" />
-      <path d="M17 4v3" />
-    </svg>
-  );
+// The last step is always the logout (the prompt and the plan card say so).
+function stepIcon(
+  step: StoredPlan["steps"][number],
+  isLast: boolean,
+  groupDungeonId?: string,
+): GameIconName {
+  if (isLast) return "beer-stein";
+  if (step.quests.some((q) => q.kind === "dungeon" || q.id === groupDungeonId)) {
+    return "dungeon-gate";
+  }
+  return step.quests.length ? "scroll-unfurled" : "compass";
 }

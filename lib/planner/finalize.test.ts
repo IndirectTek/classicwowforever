@@ -33,6 +33,14 @@ describe("finalizePlan", () => {
     expect(plan.steps[1].quests).toEqual([{ id: "q-2", name: "Quest Two" }]);
   });
 
+  it("marks dungeons, so the plan can show them differently", () => {
+    const plan = finalizePlan(
+      { ...model, steps: [{ action: "Run it", minutes: 30, questIds: ["d-1"] }] },
+      { ...ctx, candidates: [{ id: "d-1", name: "A Dungeon", kind: "dungeon" as const }] },
+    );
+    expect(plan.steps[0].quests).toEqual([{ id: "d-1", name: "A Dungeon", kind: "dungeon" }]);
+  });
+
   it("keeps a known logout spot", () => {
     expect(finalizePlan(model, ctx).logoutSpot).toEqual({
       id: "stormwind-city",

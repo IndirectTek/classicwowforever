@@ -63,7 +63,10 @@ export const StoredPlan = z.object({
       z.object({
         action: z.string(),
         minutes: z.number().int().positive(),
-        quests: z.array(z.object({ id: z.string(), name: z.string() })),
+        // kind is only set for dungeons (and missing on plans saved before it existed).
+        quests: z.array(
+          z.object({ id: z.string(), name: z.string(), kind: z.literal("dungeon").optional() }),
+        ),
       }),
     )
     .min(1),

@@ -1,4 +1,11 @@
 import type { Metadata } from "next";
+import { GameIcon } from "@/components/icons/GameIcon";
+import {
+  gameIcons,
+  iconArtists,
+  iconCredits,
+  type GameIconName,
+} from "@/components/icons/gameIcons";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -19,7 +26,20 @@ const licenses = [
   ],
   ["Import parser", "MIT", "Small and reusable by other addon and tool authors."],
   ["Quest and zone data", "CC BY SA 4.0", "Contributed data stays open and credited."],
+  ["Icons", "CC BY 3.0", "By the artists of game-icons.net, credited below."],
 ];
+
+// Every icon on the site, grouped by the artist who drew it (CC BY asks
+// for credit). Built from the generated icon list, so it's never out of date.
+const iconsByArtist = Object.entries(
+  (Object.keys(gameIcons) as GameIconName[]).reduce<Record<string, GameIconName[]>>(
+    (byArtist, icon) => {
+      (byArtist[iconCredits[icon]] ??= []).push(icon);
+      return byArtist;
+    },
+    {},
+  ),
+) as [keyof typeof iconArtists, GameIconName[]][];
 
 export default function OpenSourcePage() {
   return (
@@ -57,6 +77,46 @@ export default function OpenSourcePage() {
           </tbody>
         </table>
       </div>
+
+      <h2 className="mt-12 text-2xl font-semibold">Icons</h2>
+      <p className="mt-3 text-text-muted">
+        The icons are from{" "}
+        <a href="https://game-icons.net" className="text-accent underline underline-offset-2">
+          game-icons.net
+        </a>
+        , used under{" "}
+        <a
+          href="https://creativecommons.org/licenses/by/3.0/"
+          className="text-accent underline underline-offset-2"
+        >
+          CC BY 3.0
+        </a>
+        . None of the site&apos;s art comes from the game.
+      </p>
+      <ul className="mt-4 space-y-4">
+        {iconsByArtist.map(([artist, icons]) => (
+          <li key={artist}>
+            <p>
+              By{" "}
+              <a
+                href={iconArtists[artist].url}
+                className="text-accent underline underline-offset-2"
+              >
+                {iconArtists[artist].name}
+              </a>
+              :
+            </p>
+            <p className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm text-text-muted">
+              {icons.map((icon) => (
+                <span key={icon} className="inline-flex items-center gap-1.5">
+                  <GameIcon name={icon} className="size-5 text-accent" />
+                  {icon.replace(/-/g, " ")}
+                </span>
+              ))}
+            </p>
+          </li>
+        ))}
+      </ul>
 
       <h2 className="mt-12 text-2xl font-semibold">Contribute</h2>
       <p className="mt-3 text-text-muted">

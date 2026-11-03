@@ -21,6 +21,7 @@
     "data:check": "tsx scripts/data.mts check",
     "data:sync": "tsx scripts/data.mts sync",
     "reports": "tsx scripts/reports.mts",
+    "icons": "tsx scripts/icons.mts",
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
@@ -35,6 +36,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@iconify-json/game-icons": "1.2.4",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

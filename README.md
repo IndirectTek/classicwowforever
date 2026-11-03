@@ -59,6 +59,7 @@ Sign in with any address: the email lands in the local inbox at http://127.0.0.1
 | `pnpm data:sync`     | Copy game data into a database (`--local` or `--production`; dry run until `--yes`) |
 | `pnpm data:generate` | Regenerate `supabase/seed.sql` and the data JSON Schema from `data/`                |
 | `pnpm reports`       | Review players' quest reports and add them to `data/` (see `data/README.md`)        |
+| `pnpm icons`         | Copy the icons listed in `scripts/icons.mts` into `components/icons/`               |
 
 ## Project layout
 
@@ -88,6 +89,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). You don't need to write code; accurate q
 
 ## License
 
-The web app is [AGPL 3.0](LICENSE). Game data in `data/` is [CC BY-SA 4.0](data/LICENSE.txt). Cinzel and Inter (in `assets/fonts/`) are under the SIL Open Font License.
+The web app is [AGPL 3.0](LICENSE). Game data in `data/` is [CC BY-SA 4.0](data/LICENSE.txt). Cinzel and Inter (in `assets/fonts/`) are under the SIL Open Font License. Icons are from [game-icons.net](https://game-icons.net) under CC BY 3.0, credited on the site's Open Source page.
 
 Classic WoW Forever is a fan project, not affiliated with Blizzard Entertainment.
