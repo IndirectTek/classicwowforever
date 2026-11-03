@@ -2,3 +2,9 @@ allowBuilds:
   esbuild: false
   sharp: false
   unrs-resolver: false
+
+# GHSA-g3hv-75wg-m249: minimatch before 11.0.1 can hang on crafted patterns.
+# Only lint tooling uses it (eslint 9 asks for 3.x), and only 11.x is fixed.
+# Pinned exactly so a brand-new release isn't picked up automatically.
+overrides:
+  minimatch: 11.0.3
