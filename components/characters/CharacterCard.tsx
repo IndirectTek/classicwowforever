@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Character } from "@/lib/characters";
+import { rulesetText, type Character } from "@/lib/characters";
 import { label } from "@/lib/game";
 
 export function CharacterCard({
@@ -20,7 +20,7 @@ export function CharacterCard({
       </div>
       <p className="mt-1 text-text-muted">
         {label(character.race)} {label(character.class)}
-        {character.realm && <> · {character.realm}</>}
+        {rulesetText(character) && <> · {rulesetText(character)}</>}
       </p>
       <p className="mt-auto pt-4 text-sm text-text-muted">
         {zoneName ?? "Zone not set"}

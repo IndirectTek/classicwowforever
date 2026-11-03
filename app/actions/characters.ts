@@ -22,7 +22,16 @@ export type CharacterFormState =
       values?: Record<string, string>;
     };
 
-const FIELDS = ["name", "realm", "faction", "race", "class", "level", "zone_id"] as const;
+const FIELDS = [
+  "first_name",
+  "last_name",
+  "ruleset",
+  "faction",
+  "race",
+  "class",
+  "level",
+  "zone_id",
+] as const;
 
 export async function saveCharacter(
   _prev: CharacterFormState,

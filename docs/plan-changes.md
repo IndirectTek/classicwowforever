@@ -119,6 +119,11 @@ So gear, enchant and drop-source knowledge comes from the exporter addon and our
 - **Evals:** three group scenarios and a `required` check (`require_ids`, `must_mention`). All group runs passed. Solo stayed within tolerance (94% over 34 runs, against a 100% baseline), so the baseline was left as it was. One miss, the 240-minute plan leaving time unused, also happens on the old prompt. The other may be new: the 45-minute relaxed plan ran 2 to 3 minutes over in 2 of 15 runs (none of 5 on the old prompt). `finalizePlan()` scales plans to fit, so players never see it, but watch it in the next eval run.
 - **Next:** invite links so friends join with their own characters, and boss notes from keepers.
 
+## WoW Forever names and rulesets (November 2, 2026)
+
+- **Two-part names.** Blizzard's name announcement says every Forever character has a first and a last name, unique as a pair within a region. The form asks for both (each 2 to 12 letters; the last name is optional until the player picks one) and stores them together in `characters.name` as "First Last", so everything that shows a name keeps working.
+- **Rulesets, not realms.** Forever is realmless, so there's no realm list to offer. The free-text realm became a `ruleset` choice: Normal, PvP or Role-Play, the ones Blizzard has named. Add Hardcore in `lib/game.ts` when it opens. The old `realm` column stays until a later migration drops it; cards still show an old realm if no ruleset is set.
+
 ## New features
 
 - **Rested XP calculator** at `/rested`. No AI and no login. It uses classic-era rates, defined as constants in `lib/rested.ts`; confirm them in WoW Forever.

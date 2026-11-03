@@ -35,7 +35,7 @@ async function CharacterGrid() {
     supabase
       .from("characters")
       .select(
-        "id, name, realm, faction, race, class, level, zone_id, updated_at, session_plans(created_at)",
+        "id, name, realm, ruleset, faction, race, class, level, zone_id, updated_at, session_plans(created_at)",
       )
       .order("updated_at", { ascending: false })
       .order("created_at", { referencedTable: "session_plans", ascending: false })

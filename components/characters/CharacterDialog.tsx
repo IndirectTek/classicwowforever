@@ -7,7 +7,16 @@ import { deleteCharacter, saveCharacter, type CharacterFormState } from "@/app/a
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { ChipGroup } from "@/components/ui/ChipGroup";
 import type { Character } from "@/lib/characters";
-import { classesFor, label, racesFor, type Faction, type Race } from "@/lib/game";
+import {
+  classesFor,
+  label,
+  racesFor,
+  rulesetLabels,
+  rulesets,
+  splitName,
+  type Faction,
+  type Race,
+} from "@/lib/game";
 import type { Zone } from "@/lib/zones";
 
 // Starting values for a new character, e.g. from the home page prompt.
@@ -106,6 +115,8 @@ function CharacterForm({
   }, [state, onDone]);
 
   const errors = state.status === "error" ? (state.fieldErrors ?? {}) : {};
+  // WoW Forever names are "First Last"; the form edits the parts.
+  const savedName = splitName(character?.name ?? "");
   // After a failed save, show what was typed rather than the original values.
   const typed = state.status === "error" ? state.values : undefined;
 
@@ -132,23 +143,41 @@ function CharacterForm({
       {character && <input type="hidden" name="id" value={character.id} />}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <Field label="Name" error={errors.name}>
+        <Field label="First name" error={errors.first_name}>
           <input
-            name="name"
-            defaultValue={typed?.name ?? character?.name}
+            name="first_name"
+            defaultValue={typed?.first_name ?? savedName.first}
             required
             maxLength={12}
             autoComplete="off"
             className={inputClass}
           />
         </Field>
-        <Field label="Realm (optional)" error={errors.realm}>
+        <Field label="Last name (optional)" error={errors.last_name}>
           <input
-            name="realm"
-            defaultValue={typed?.realm ?? character?.realm ?? ""}
-            maxLength={40}
+            name="last_name"
+            defaultValue={typed?.last_name ?? savedName.last}
+            maxLength={12}
+            autoComplete="off"
             className={inputClass}
           />
+        </Field>
+      </div>
+
+      <div className="mt-4">
+        <Field label="Ruleset (optional)" error={errors.ruleset}>
+          <select
+            name="ruleset"
+            defaultValue={typed?.ruleset ?? character?.ruleset ?? ""}
+            className={inputClass}
+          >
+            <option value="">Not sure yet</option>
+            {rulesets.map((r) => (
+              <option key={r} value={r}>
+                {rulesetLabels[r]}
+              </option>
+            ))}
+          </select>
         </Field>
       </div>
 

@@ -8,7 +8,7 @@ import { CharacterDialog } from "@/components/characters/CharacterDialog";
 import { buttonClasses } from "@/components/ui/Button";
 import { formatDate } from "@/components/characters/CharacterCard";
 import { requireUser } from "@/lib/auth";
-import type { Character } from "@/lib/characters";
+import { rulesetText, type Character } from "@/lib/characters";
 import { label } from "@/lib/game";
 import { goalLabels, type Goal } from "@/lib/schema";
 import { createClient } from "@/lib/supabase/server";
@@ -43,7 +43,7 @@ async function CharacterDetail({ params }: Pick<PageProps<"/characters/[id]">, "
   const [{ data: character }, { data: plans }, zones] = await Promise.all([
     supabase
       .from("characters")
-      .select("id, name, realm, faction, race, class, level, zone_id, updated_at")
+      .select("id, name, realm, ruleset, faction, race, class, level, zone_id, updated_at")
       .eq("id", id)
       .maybeSingle<Character>(),
     supabase
@@ -65,7 +65,7 @@ async function CharacterDetail({ params }: Pick<PageProps<"/characters/[id]">, "
           <p className="mt-2 text-text-muted">
             Level <span className="font-mono text-text">{character.level}</span>{" "}
             {label(character.race)} {label(character.class)} · {label(character.faction)}
-            {character.realm && <> · {character.realm}</>}
+            {rulesetText(character) && <> · {rulesetText(character)}</>}
           </p>
           <p className="mt-1 text-sm text-text-muted">{zoneName ?? "Zone not set"}</p>
         </div>

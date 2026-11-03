@@ -19,7 +19,7 @@ export default function PrivacyPage() {
         </p>
         <p>
           <strong className="text-text">Your account.</strong> Signing in stores your email address
-          so we can send sign-in links. Characters you add (name, realm, race, class, level, zone)
+          so we can send sign-in links. Characters you add (name, ruleset, race, class, level, zone)
           are visible only to you. Delete a character and everything tied to it is deleted with it.
         </p>
         <p>

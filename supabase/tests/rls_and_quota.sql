@@ -20,6 +20,18 @@ do $$ begin
   exception when insufficient_privilege then null;
   end;
 end $$;
+-- WoW Forever names: "First Last", up to 25 characters, and a ruleset.
+insert into public.characters (profile_id, name, faction, race, class, level, ruleset)
+  values (auth.uid(), 'Aldric Stonebrowshield', 'alliance', 'human', 'paladin', 5, 'pvp');
+delete from public.characters where name = 'Aldric Stonebrowshield';
+do $$ begin
+  begin
+    insert into public.characters (profile_id, name, faction, race, class, level, ruleset)
+      values (auth.uid(), 'Aldric', 'alliance', 'human', 'paladin', 5, 'battleground');
+    raise exception 'FAIL: unknown ruleset accepted';
+  exception when check_violation then null;
+  end;
+end $$;
 update public.profiles set display_name = 'A' where id = auth.uid();
 do $$ begin
   begin

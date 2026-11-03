@@ -69,3 +69,20 @@ export function label(id: string): string {
   if (id in races) return races[id as Race].label;
   return id.charAt(0).toUpperCase() + id.slice(1);
 }
+
+// WoW Forever has no realms; players choose a ruleset instead. These are the
+// rulesets Blizzard has announced. Add Hardcore here when it opens.
+export const rulesets = ["normal", "pvp", "roleplay"] as const;
+export type Ruleset = (typeof rulesets)[number];
+
+export const rulesetLabels: Record<Ruleset, string> = {
+  normal: "Normal",
+  pvp: "PvP",
+  roleplay: "Role-Play",
+};
+
+// WoW Forever names have two parts, stored together as "First Last".
+export function splitName(name: string): { first: string; last: string } {
+  const [first = "", ...rest] = name.trim().split(/\s+/);
+  return { first, last: rest.join(" ") };
+}
